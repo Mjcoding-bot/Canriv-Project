@@ -79,13 +79,22 @@ add_action('template_redirect', function () {
     if (is_page(['order-management', 'canriv-analytics', 'registered-users'])) {
         nocache_headers();
         if (!is_user_logged_in()) {
-            auth_redirect();
+            wp_safe_redirect(canriv_page_url('account'));
+            exit;
         }
         if (!current_user_can('manage_options')) {
             wp_die('This page is for Canriv administrators.', '', ['response' => 403]);
         }
     }
+    if (is_account_page() && !is_wc_endpoint_url() && current_user_can('manage_options')) {
+        wp_safe_redirect(canriv_page_url('order-management'));
+        exit;
+    }
 });
+
+add_filter('woocommerce_login_redirect', function ($redirect, $user) {
+    return user_can($user, 'manage_options') ? canriv_page_url('order-management') : $redirect;
+}, 10, 2);
 
 add_action('wp_enqueue_scripts', function () {
     $slug = array_search(get_queried_object_id(), get_option('canriv_pages', []));
@@ -160,6 +169,14 @@ function canriv_form_message() {
         return '<p class="canriv-notice ' . esc_attr($kind) . '" role="status">' . esc_html($message) . '</p>';
     }
     return '';
+}
+
+function canriv_registration_provinces() {
+    $options = '<option value="">Select a province or Metro Manila</option>';
+    foreach (WC()->countries->get_states('PH') as $code => $label) {
+        $options .= '<option value="' . esc_attr($code) . '">' . esc_html($label) . '</option>';
+    }
+    return $options;
 }
 
 function canriv_fields($kind) {
@@ -311,6 +328,9 @@ function canriv_submit() {
         $finish('invalid');
     }
     $name = $text('name');
+    if ($kind === 'register' && $text('first_name') && $text('last_name')) {
+        $name = implode(' ', array_filter([$text('first_name'), $text('middle_initial'), $text('last_name')]));
+    }
     $email = sanitize_email($text('email'));
     $phone = $text('phone', 32);
     if (!$name || !is_email($email)) {
@@ -318,17 +338,15 @@ function canriv_submit() {
     }
     if ($kind === 'register') {
         $phone = preg_replace('/[\s()-]+/', '', $phone);
-        $persona = $text('persona') ?: 'homeowner';
-        $city_names = ['quezon-city' => 'Quezon City', 'makati' => 'Makati City', 'taguig' => 'Taguig / BGC', 'pasig' => 'Pasig City', 'mandaue' => 'Mandaue City, Cebu', 'davao-city' => 'Davao City'];
-        $city = $text('city') === 'other' ? $text('city_other') : ($city_names[$text('city')] ?? '');
+        $city = $text('city');
+        $province = $text('province');
+        $provinces = WC()->countries->get_states('PH');
         $password = (string) wp_unslash(is_string($_POST['password'] ?? null) ? $_POST['password'] : '');
         $confirm = (string) wp_unslash(is_string($_POST['confirm'] ?? null) ? $_POST['confirm'] : '');
         if (is_user_logged_in() || strlen($password) < 12 || strlen($password) > 72 ||
-            $password !== $confirm || !$text('terms') || !$text('privacy') || !preg_match('/^(?:\+?63|0)?9\d{9}$/', $phone) ||
-            !in_array($persona, ['homeowner', 'contractor', 'facility'], true) ||
-            !in_array($text('region'), ['ncr', 'r3', 'r4a', 'r7', 'r11'], true) || !$city ||
-            !$text('barangay') || !$text('street') || !preg_match('/^\d{4}$/', $text('postcode')) ||
-            ($persona !== 'homeowner' && !$text('company'))) {
+            $password !== $confirm || !$text('terms') || !preg_match('/^(?:\+?63|0)?9\d{9}$/', $phone) ||
+            !isset($provinces[$province]) || !$city || !$text('barangay') || !$text('street') ||
+            !preg_match('/^\d{4}$/', $text('postcode'))) {
             $finish('invalid');
         }
         if (email_exists($email)) {
@@ -340,16 +358,11 @@ function canriv_submit() {
         }
         $customer = new WC_Customer($account);
         $customer->set_billing_phone('+63' . substr(preg_replace('/\D/', '', $phone), -10));
-        $address = ['country' => 'PH', 'city' => $city, 'postcode' => $text('postcode'), 'address_1' => $text('street'), 'address_2' => $text('barangay'), 'company' => $persona === 'homeowner' ? '' : $text('company')];
+        $address = ['first_name' => $text('first_name'), 'last_name' => $text('last_name'), 'country' => 'PH', 'state' => $province, 'city' => $city, 'postcode' => $text('postcode'), 'address_1' => $text('street'), 'address_2' => $text('barangay')];
         foreach (['billing', 'shipping'] as $type) {
-            foreach ($address as $key => $value) $customer->set_prop($type . '_' . $key, $value);
+            foreach ($address as $key => $value) $customer->set_props([$type . '_' . $key => $value]);
         }
         $customer->save();
-        update_user_meta($account, 'canriv_persona', $persona);
-        update_user_meta($account, 'canriv_region', $text('region'));
-        if ($persona !== 'homeowner') {
-            foreach (['pcab', 'tin', 'business_type'] as $key) update_user_meta($account, 'canriv_' . $key, $text($key));
-        }
         $finish('registered');
     }
     if ($kind === 'review') {
@@ -528,6 +541,48 @@ function canriv_table($headers, $rows) {
     return $html . '</tbody></table></div>' . ($rows ? '' : '<p>No records yet.</p>');
 }
 
+function canriv_ops_header() {
+    if (!current_user_can('manage_options')) return '';
+    return '<header class="canriv-ops-top"><div class="canriv-ops-title"><strong>CANRIV</strong><span>ENG ADMIN</span><small>Heavy Equipment &amp; Chiller Portal</small></div>' .
+        '<div class="canriv-ops-session"><span class="material-symbols-outlined" aria-hidden="true">schedule</span>' .
+        '<time>' . esc_html(wp_date('H:i', null, new DateTimeZone('Asia/Manila'))) . ' PHT</time></div>' .
+        '<div class="canriv-ops-identity"><span class="material-symbols-outlined" aria-hidden="true">person</span><div>' .
+        esc_html(wp_get_current_user()->display_name) . '<small>Administrator</small></div><a href="' .
+        esc_url(wp_logout_url(canriv_page_url('account'))) . '">Sign out</a></div></header>';
+}
+
+function canriv_ops_dashboard($type) {
+    if (!current_user_can('manage_options')) {
+        return '';
+    }
+    $slug = ['orders' => 'order-management', 'users' => 'registered-users', 'analytics' => 'canriv-analytics'][$type];
+    $metrics = match ($type) {
+        'orders' => [
+        'Processing orders' => wc_orders_count('processing'),
+        'Completed orders' => wc_orders_count('completed'),
+        'Pending payment' => wc_orders_count('pending'),
+    ],
+        'users' => [
+        'Registered customers' => count_users()['avail_roles']['customer'] ?? 0,
+        'Recent customer records' => count(get_users(['role' => 'customer', 'number' => 50, 'fields' => 'ID'])),
+    ],
+        default => [],
+    };
+    $cards = '';
+    if ($metrics) {
+        $cards = '<div class="canriv-ops-metrics">';
+        foreach ($metrics as $label => $value) {
+            $cards .= '<div><span>' . esc_html($label) . '</span><strong>' . esc_html(number_format_i18n($value)) . '</strong></div>';
+        }
+        $cards .= '</div>';
+    }
+    $replacements = ['%%records%%' => $cards . '<section class="canriv-ops-records">' . canriv_admin_window($type) . '</section>'];
+    foreach (['home', 'order-management', 'registered-users', 'canriv-analytics'] as $route) {
+        $replacements['%%' . $route . '%%'] = esc_url(canriv_page_url($route));
+    }
+    return strtr(file_get_contents(__DIR__ . '/assets/' . $slug . '.html'), $replacements);
+}
+
 function canriv_admin_window($type) {
     if (!current_user_can('manage_options')) {
         return '';
@@ -569,12 +624,16 @@ add_filter('elementor/widget/render_content', function ($content, $widget) {
     return preg_replace_callback('/%%CANRIV:([a-z-]+)%%/', function ($match) {
         $type = $match[1];
         return match ($type) {
-            'header' => canriv_header(),
-            'footer' => canriv_footer(),
+            'header' => is_page(['order-management', 'registered-users', 'canriv-analytics']) ? canriv_ops_header() : canriv_header(),
+            'footer' => is_page(['order-management', 'registered-users', 'canriv-analytics']) ? '' : canriv_footer(),
             'cart' => do_shortcode('[woocommerce_cart]'),
             'checkout' => do_shortcode('[woocommerce_checkout]'),
             'account' => do_shortcode('[woocommerce_my_account]'),
             'registration-fields' => canriv_fields('register'),
+            'registration-action' => esc_url(admin_url('admin-post.php')),
+            'registration-provinces' => canriv_registration_provinces(),
+            'account-url' => esc_url(canriv_page_url('account')),
+            'home-url' => esc_url(canriv_page_url('home')),
             'review-fields' => canriv_fields('review'),
             'contact-fields' => canriv_fields('contact'),
             'career-fields' => canriv_fields('career'),
@@ -583,7 +642,7 @@ add_filter('elementor/widget/render_content', function ($content, $widget) {
             'cart-count' => WC()->cart ? (string) WC()->cart->get_cart_contents_count() : '0',
             'reviews' => canriv_reviews(),
             'contact', 'reserve', 'rfq', 'home', 'review' => canriv_form($type),
-            'orders', 'users', 'analytics' => canriv_admin_window($type),
+            'orders', 'users', 'analytics' => canriv_ops_dashboard($type),
             default => '',
         };
     }, $content);

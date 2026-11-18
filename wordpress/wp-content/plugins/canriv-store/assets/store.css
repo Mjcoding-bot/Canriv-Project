@@ -21,7 +21,7 @@ body.elementor-page { margin: 0; background: #f8f9ff; color: #0b1c30; font-famil
 .canriv-header a:hover, .canriv-footer a:hover { color: #006a61; }
 .canriv-mobile { display: none; }
 .canriv-mobile nav { display: grid; gap: .65rem; padding: .75rem 0; }
-.canriv-preview { padding: .5rem clamp(1rem,4vw,3.5rem); background: #fff4d1; color: #563c00; font-size: .76rem; }
+.canriv-preview { display: none; }
 .elementor-page > .elementor { display: flex; flex-direction: column; min-height: 100vh; }
 .elementor-page > .elementor > .e-con:last-child { margin-top: auto; }
 body .canriv-footer { display:block; width:100%; padding:0; background:#0b1c30; color:#d4dfeb; border:0; }
@@ -186,13 +186,13 @@ body .canriv-site-brand { display:flex; align-items:center; gap:.7rem; flex-shri
 .canriv-site-nav { display:flex; align-items:center; justify-content:center; gap:1.15rem; }
 .canriv-site-nav a { font:500 .82rem/1.5 Inter,sans-serif; white-space:nowrap; }
 body .canriv-site-header nav a:hover,body .canriv-site-header nav a[aria-current=page] { color:#007d73; }
-.canriv-site-actions { display:flex; align-items:center; gap:1rem; flex-shrink:0; }
+.canriv-site-actions { display:flex; align-items:center; gap:1rem; flex-wrap:wrap; max-width:100%; }
 .canriv-site-actions a { display:flex; align-items:center; justify-content:center; font:600 .75rem/1.5 Inter,sans-serif; }
-.canriv-site-cart { position:relative; width:32px; height:36px; }
-.canriv-site-cart .material-symbols-outlined { font-size:25px; }
-.canriv-site-cart-count { position:absolute; top:-4px; right:-3px; display:flex; align-items:center; justify-content:center; min-width:16px; height:16px; padding:0 3px; border-radius:20px; color:white; background:#0d9488; font:600 .55rem/1 Inter,sans-serif; }
-body .canriv-site-header a.canriv-site-register { padding:.5rem 1rem; border-radius:4px; background:#0d9488; color:white; }
-.canriv-site-profile { width:36px; height:36px; border-radius:12px; background:#e5eeff; }
+.canriv-site-cart { position:relative; width:38px; height:44px; border-radius:4px; background:#eff4ff; }
+.canriv-site-cart .material-symbols-outlined { font-size:23px; color:#006a61; }
+.canriv-site-cart-count { position:absolute; top:-4px; right:-4px; display:flex; align-items:center; justify-content:center; min-width:16px; height:16px; padding:0 3px; border-radius:20px; color:white; background:#006a61; font:600 .6rem/1 Inter,sans-serif; }
+body .canriv-site-header a.canriv-site-register { padding:.5rem 1rem; border-radius:12px; background:#007d73; color:white; }
+.canriv-site-profile { width:36px; height:36px; border-radius:12px; background:#dce9ff; }
 .canriv-site-profile .material-symbols-outlined { font-size:21px; }
 .canriv-site-header a:focus-visible,.canriv-site-mobile summary:focus-visible { outline:3px solid #007d73; outline-offset:4px; border-radius:3px; }
 .canriv-site-mobile { display:none; width:100%; font-size:.85rem; }
@@ -206,6 +206,59 @@ body .canriv-site-header a.canriv-site-register { padding:.5rem 1rem; border-rad
  .canriv-site-brand { gap:.5rem; }
  .canriv-site-brand small { font-size:.43rem; letter-spacing:.08em; }
  .canriv-site-actions { gap:.6rem; }
- .canriv-site-actions .canriv-site-signin { display:none; }
  .canriv-site-actions .canriv-site-register { padding:.5rem .65rem; }
 }
+.canriv-registration-page { padding:2.5rem 1rem; overflow:clip; }
+.canriv-registration-page main { width:100%; max-width:580px; margin:auto; }
+.canriv-registration-page input,.canriv-registration-page select,.canriv-registration-page textarea { min-width:0; }
+.canriv-registration-page input[type=checkbox] { flex-shrink:0; }
+.canriv-registration-page [aria-pressed=true] { color:#006a61; box-shadow:0 1px 4px #0b1c3015; }
+.canriv-registration-page [class*=justify-between] { flex-wrap:wrap; gap:.5rem; }
+body.elementor-page .canriv-registration-page button[type=submit] { width:100%; color:#fff; background:#006a61; }
+.canriv-registration-page .hidden { display:none !important; }
+@media(max-width:520px){.canriv-registration-page .grid-cols-2 {grid-template-columns:1fr;} .canriv-registration-page [data-persona] {font-size:.75rem;padding:.5rem .25rem;} }
+.canriv-ops { display:grid; grid-template-columns:16rem minmax(0,1fr); min-height:65vh; font-family:Inter,sans-serif; }
+.canriv-ops aside { padding:1.5rem 1rem; }
+.canriv-ops-brand { padding:0 .75rem 1.5rem; font:700 1.6rem/1 Barlow Condensed,sans-serif; }
+.canriv-ops-brand span { display:block; margin-top:.4rem; color:#9bd9ce; font:500 .75rem/1.5 Inter,sans-serif; }
+body .canriv-ops aside a { color:inherit; }
+.canriv-ops-back { display:block; padding:1rem .75rem; font-size:.8rem; }
+.canriv-ops-main { min-width:0; padding:1.5rem clamp(1rem,3vw,3rem) 3rem; }
+.canriv-ops-metrics { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,10rem),1fr)); gap:1rem; margin:1.5rem 0; }
+.canriv-ops-metrics > div,.canriv-ops-records { min-width:0; padding:1.25rem; background:white; border:1px solid #e1eafb; border-radius:.65rem; box-shadow:0 2px 5px #0b1c3010; }
+.canriv-ops-metrics span { display:block; color:#42566a; font-size:.83rem; }
+.canriv-ops-metrics strong { display:block; margin-top:.4rem; color:#006a61; font:700 2rem/1 Barlow Condensed,sans-serif; }
+.canriv-ops-records h2 { margin:1rem 0; font:700 1.5rem/1.2 Barlow Condensed,sans-serif; }
+.canriv-ops-records h2:first-child { margin-top:0; }
+.canriv-ops-records th { background:#eff4ff; font-size:.8rem; }
+.canriv-ops-records td { font-size:.85rem; }
+.canriv-ops-records .canriv-button { margin:.7rem 0; }
+@media(max-width:800px) { .canriv-ops { grid-template-columns:minmax(0,1fr); } }
+.canriv-ops-top { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding:1.1rem clamp(1rem,3vw,2rem); background:#213145; color:#eaf1ff; border-bottom:1px solid #ffffff24; font:500 .85rem Inter,sans-serif; }
+.canriv-ops-title strong { font:700 1.75rem/1 Barlow Condensed,sans-serif; letter-spacing:.05em; vertical-align:middle; }
+.canriv-ops-title > span { margin-left:.55rem; padding:.2rem .45rem; background:#006a61; border-radius:.25rem; color:white; font:600 .7rem Inter,sans-serif; }
+.canriv-ops-top small { display:block; margin-top:.35rem; color:#b9c9db; font-size:.72rem; }
+.canriv-ops-title small { text-transform:uppercase; letter-spacing:.08em; }
+.canriv-ops-session,.canriv-ops-identity { display:flex; align-items:center; gap:.65rem; }
+.canriv-ops-session .material-symbols-outlined { font-size:18px; }
+.canriv-ops-identity .material-symbols-outlined { padding:.35rem; border-radius:50%; background:#006a61; color:white; font-size:20px; }
+body .canriv-ops-identity a { padding:.35rem .6rem; border:1px solid #ffffff45; border-radius:.3rem; color:inherit; }
+.canriv-ops-main { min-height:calc(100vh - 5rem); }
+.canriv-ops-records { margin-top:1.5rem; }
+.canriv-registration-stitch { background:#f8f9ff; color:#0b1c30; font-family:Inter,sans-serif; }
+.canriv-registration-stitch :is(input,select,textarea) { min-width:0; }
+body.elementor-page .canriv-registration-stitch button[type=submit] { background:#006a61; color:white; }
+.canriv-register-names { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,12rem),1fr)); gap:.75rem; }
+.canriv-delivery-intro { border:1px solid #e1eafb; border-radius:1rem; padding:1.5rem; background:white; }
+.canriv-delivery-intro h2 { font:700 1.85rem/1.15 Barlow Condensed,sans-serif; }
+.canriv-delivery-intro p { margin-top:.75rem; color:#42566a; }
+.canriv-delivery-guide { margin-top:1.25rem; overflow:hidden; border:1px solid #e1eafb; border-radius:1rem; background:#fff; }
+.canriv-delivery-guide img { display:block; width:100%; height:auto; aspect-ratio:2 / 1; object-fit:cover; }
+.canriv-delivery-guide-body { padding:1.4rem 1.5rem; }
+.canriv-delivery-guide h2 { margin:0 0 1rem; font:700 1.65rem/1.15 Barlow Condensed,sans-serif; }
+.canriv-delivery-guide ul { display:grid; gap:1rem; padding:0; margin:0; list-style:none; }
+.canriv-delivery-guide li { display:flex; align-items:flex-start; gap:.75rem; }
+.canriv-delivery-guide .material-symbols-outlined { padding:.45rem; border-radius:.4rem; color:#006a61; background:#e4f4f0; font-size:19px; }
+.canriv-delivery-guide li strong { display:block; font-size:.9rem; }
+.canriv-delivery-guide li p { margin:.2rem 0 0; color:#42566a; font-size:.85rem; line-height:1.5; }
+body .canriv-delivery-guide a { display:inline-block; margin-top:1.15rem; color:#006a61; text-decoration:underline; text-underline-offset:.2em; font-size:.85rem; font-weight:600; }

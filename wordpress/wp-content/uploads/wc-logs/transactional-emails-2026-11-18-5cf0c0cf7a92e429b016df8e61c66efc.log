@@ -4,3 +4,5 @@
 2026-11-18T02:34:13+00:00 WARNING Email "customer_new_account" for user #5 failed to send: Could not instantiate mail function. CONTEXT: {"email_type":"customer_new_account","status":"failed","recipient":"canriv-test-5287e7d0","user":5}
 2026-11-18T02:34:27+00:00 WARNING Email "new_order" for order #52 failed to send: Could not instantiate mail function. CONTEXT: {"email_type":"new_order","status":"failed","recipient":"mj3","order":52}
 2026-11-18T02:34:29+00:00 WARNING Email "customer_processing_order" for order #52 failed to send: Could not instantiate mail function. CONTEXT: {"email_type":"customer_processing_order","status":"failed","recipient":"canriv-test-5287e7d0","order":52}
+2026-11-18T07:42:01+00:00 WARNING Email "customer_new_account" for user #6 failed to send: Could not instantiate mail function. CONTEXT: {"email_type":"customer_new_account","status":"failed","recipient":"header-qa-0845bce7","user":6}
+2026-11-18T15:27:46+00:00 WARNING Email "customer_new_account" for user #8 failed to send: Could not instantiate mail function. CONTEXT: {"email_type":"customer_new_account","status":"failed","recipient":"delivery-qa-a0a93886","user":8}
