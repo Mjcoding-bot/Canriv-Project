@@ -1,22 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     const jobs = Array.from(document.querySelectorAll('[data-job-role]'));
     const search = document.getElementById('career-search');
-    const hub = document.getElementById('career-hub');
     const buttons = Array.from(document.querySelectorAll('[data-job-filter]'));
     let category = 'all';
     function filterJobs() {
         const term = search.value.trim().toLowerCase();
         for (const job of jobs) {
-            job.hidden = !(job.textContent.toLowerCase().includes(term) &&
-                (category === 'all' || job.dataset.jobCategory === category) &&
-                (hub.value === 'all' || job.dataset.jobHub.split(' ').includes(hub.value)));
+            job.hidden = !(job.querySelector('.canriv-career-copy').textContent.toLowerCase().includes(term) &&
+                (category === 'all' || job.dataset.jobCategory === category));
         }
         const count = jobs.filter((job) => !job.hidden).length;
         document.getElementById('career-count').textContent = `${count} OF ${jobs.length} ROLES SHOWN`;
         document.getElementById('career-empty').hidden = count > 0;
     }
     search.addEventListener('input', filterJobs);
-    hub.addEventListener('change', filterJobs);
     for (const button of buttons) {
         const group = button.dataset.jobFilter;
         const count = jobs.filter((job) => group === 'all' || job.dataset.jobCategory === group).length;

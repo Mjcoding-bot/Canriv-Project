@@ -17,8 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const term = search.value.trim().toLowerCase();
         for (const card of cards) {
             const matches = Object.entries(selected).every(([group, values]) =>
-                values.some((value) => card.dataset[group].split(' ').includes(value)));
-            card.hidden = !matches || Number(card.dataset.price) > Number(price.value) ||
+                values.some((value) => (card.dataset[group] ?? '').split(' ').includes(value)));
+            const outsideBudget = card.dataset.price === undefined
+                ? Number(price.value) < Number(price.max)
+                : Number(card.dataset.price) > Number(price.value);
+            card.hidden = !matches || outsideBudget ||
                 !card.textContent.toLowerCase().includes(term);
         }
         const sorters = {
@@ -28,7 +31,15 @@ document.addEventListener('DOMContentLoaded', () => {
             popularity: (a, b) => Number(b.dataset.popularity) - Number(a.dataset.popularity),
             'stock-desc': (a, b) => Number(b.dataset.stock) - Number(a.dataset.stock),
         };
-        if (sortChanged) cards.sort(sorters[sort.value]);
+        if (sortChanged) {
+            const compare = sorters[sort.value];
+            cards.sort((a, b) => {
+                const quoteOnlyA = a.dataset.price === undefined;
+                const quoteOnlyB = b.dataset.price === undefined;
+                if (quoteOnlyA || quoteOnlyB) return Number(quoteOnlyA) - Number(quoteOnlyB);
+                return compare(a, b);
+            });
+        }
         for (const card of cards) grid.append(card);
         const count = cards.filter((card) => !card.hidden).length;
         document.getElementById('catalog-results-count').textContent = `${count} of ${cards.length}`;

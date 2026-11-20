@@ -1,12 +1,131 @@
-<div class="canriv-ops font-body-md bg-surface"><aside class="bg-inverse-surface text-inverse-on-surface"><div class="canriv-ops-brand">CANRIV <span>Operations Portal</span></div><nav aria-label="Operations navigation" class="flex flex-col gap-1 px-space-md" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded-lg shadow-sm"><a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="orders-and-reservations" href="%%order-management%%"><span class="material-symbols-outlined text-[20px]">receipt_long</span><span>Orders &amp; Reservations</span></a><a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="registered-users-and-accounts" href="%%registered-users%%"><span class="material-symbols-outlined text-[20px]">group</span><span>Registered Users &amp; Accounts</span></a><a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="analytics-and-performance" href="%%canriv-analytics%%"><span class="material-symbols-outlined text-[20px]">query_stats</span><span>Analytics &amp; Performance</span></a></nav><a class="canriv-ops-back" href="%%home%%">Back to Public Store</a></aside><main class="canriv-ops-main"><div class="flex flex-col xl:flex-row xl:items-end justify-between gap-space-md mb-space-md">
+<div class="canriv-directory font-body-md text-on-surface bg-surface"><aside class="canriv-directory-sidebar bg-surface-container-low shadow-sm flex flex-col justify-between py-space-lg"><div class="flex flex-col gap-space-md"><div class="px-space-lg"><span class="font-label-code text-label-sm uppercase font-semibold text-secondary tracking-wider">Operational Navigation</span></div><nav class="flex flex-col gap-1 px-space-md" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded-lg shadow-sm"><a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="orders-and-reservations" href="%%order-management%%"><span class="material-symbols-outlined text-[20px]">receipt_long</span><span>Orders &amp; Reservations</span></a><a aria-current="page" class="flex items-center gap-space-sm px-space-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md bg-primary-container text-on-primary-container font-semibold" data-path="registered-users-and-accounts" href="%%registered-users%%"><span class="material-symbols-outlined text-[20px]">group</span><span>Registered Users &amp; Accounts</span></a><a class="flex items-center gap-space-sm px-space-md py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="analytics-and-performance" href="%%canriv-analytics%%"><span class="material-symbols-outlined text-[20px]">query_stats</span><span>Analytics &amp; Performance</span></a></nav></div><div class="px-space-md flex flex-col gap-space-sm"><a class="flex items-center justify-between px-space-md py-2.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors font-body-md text-body-md" data-path="public-catalog" href="%%home%%"><span>Back to Public Store</span><span class="material-symbols-outlined text-[18px]">open_in_new</span></a></div></aside><main class="min-w-0 px-gutter"><section class="py-space-md">
+<div class="flex flex-col xl:flex-row xl:items-end justify-between gap-space-md mb-space-md">
 <div>
 <div class="flex items-center gap-space-sm mb-1">
 <span class="font-label-code text-label-sm text-primary uppercase tracking-widest font-semibold">User Access &amp; Corporate Registry</span>
 <span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
-<span class="font-label-code text-label-sm text-secondary">Registry DB: SYNCED (v4.12.0)</span>
+<span class="font-label-code text-label-sm text-secondary">WordPress account directory</span>
 </div>
 <h1 class="font-headline-lg text-headline-lg text-on-surface uppercase tracking-tight">Registered Users &amp; Client Accounts</h1>
 </div>
 <!-- Quick Action Controls -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<a class="flex items-center gap-1.5 px-space-md py-2 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors font-body-sm text-body-sm shadow-sm" href="%%export%%">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span>Export Directory (CSV)</span>
+</a>
+<a class="flex items-center gap-1.5 px-space-md py-2 rounded-lg bg-secondary text-on-secondary hover:opacity-95 transition-colors font-body-sm text-body-sm shadow-sm" href="%%wpusers%%">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span>Manage Accounts</span>
+</a>
+<a class="flex items-center gap-1.5 px-space-md py-2 rounded-lg bg-primary text-on-primary hover:bg-primary-container transition-all font-body-sm text-body-sm shadow-md font-medium" href="%%newuser%%">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+<span>Add New Customer / Client</span>
+</a>
+</div>
+</div>
+<!-- 5-Metric Metric Deck -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-space-sm">
+<!-- Metric 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<span class="font-label-code text-label-sm uppercase text-secondary font-semibold">Total Accounts</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">groups</span>
+</div>
+<div class="mt-space-md">
+<div class="font-headline-lg text-headline-lg text-on-surface leading-none">%%metric1%%</div>
+<div class="flex items-center gap-1 mt-1 font-body-sm text-body-sm text-primary">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span class="font-semibold">%%month%%</span>
+<span class="text-secondary font-normal">registered this month</span>
+</div>
+</div>
+</div>
+<!-- Metric 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<span class="font-label-code text-label-sm uppercase text-secondary font-semibold">Customers</span>
+<span class="px-space-xs py-0.5 rounded bg-primary-fixed text-on-primary-fixed font-label-code text-label-sm font-semibold">WC</span>
+</div>
+<div class="mt-space-md">
+<div class="font-headline-lg text-headline-lg text-on-surface leading-none">%%metric2%%</div>
+<div class="font-body-sm text-body-sm text-secondary mt-1">WooCommerce customer accounts</div>
+</div>
+</div>
+<!-- Metric 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<span class="font-label-code text-label-sm uppercase text-secondary font-semibold">Subscribers</span>
+<span class="material-symbols-outlined text-tertiary text-[20px]">corporate_fare</span>
+</div>
+<div class="mt-space-md">
+<div class="font-headline-lg text-headline-lg text-on-surface leading-none">%%metric3%%</div>
+<div class="font-body-sm text-body-sm text-secondary mt-1">WordPress subscriber accounts</div>
+</div>
+</div>
+<!-- Metric 4 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<span class="font-label-code text-label-sm uppercase text-secondary font-semibold">Canriv Staff</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">cottage</span>
+</div>
+<div class="mt-space-md">
+<div class="font-headline-lg text-headline-lg text-on-surface leading-none">%%metric4%%</div>
+<div class="font-body-sm text-body-sm text-secondary mt-1">Administrators and shop managers</div>
+</div>
+</div>
+<!-- Metric 5: Pending Alert -->
+<div class="bg-error-container/30 rounded-xl p-space-md shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<span class="font-label-code text-label-sm uppercase text-on-error-container font-semibold">Other Accounts</span>
+<span class="flex h-2.5 w-2.5 relative">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-error opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-error"></span>
+</span>
+</div>
+<div class="mt-space-md">
+<div class="font-headline-lg text-headline-lg text-on-error-container leading-none">%%metric5%%</div>
 
-</div>%%records%%</main></div>
+<span>Additional WordPress roles</span>
+
+
+ </div>
+</div>
+</div>
+</section><section class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm mb-space-md">%%filters%%</section><div class="grid grid-cols-1 2xl:grid-cols-12 gap-space-md items-start mb-space-xl">
+<!-- LEFT / CENTER COLUMN: CUSTOMER RECORDS DATA TABLE (8 COLS ON 2XL) -->
+<div class="2xl:col-span-8 flex flex-col bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+<!-- Table Header Bar -->
+<div class="px-space-md py-space-sm bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="font-headline-sm text-headline-sm uppercase text-on-surface">Client Accounts Directory</span>
+<span class="font-label-code text-label-sm px-2 py-0.5 rounded bg-surface-container text-secondary font-semibold">%%range%%</span>
+</div>
+<div class="flex items-center gap-1">
+
+
+</div>
+</div>
+<!-- Tabular Records -->
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container/60 text-secondary font-label-code text-label-sm uppercase tracking-wider">
+<th class="py-space-sm px-space-md">Customer &amp; Entity</th>
+<th class="py-space-sm px-space-md">Account Type</th>
+<th class="py-space-sm px-space-md">Contact &amp; Location</th>
+<th class="py-space-sm px-space-md">Registered</th>
+<th class="py-space-sm px-space-md text-right">Orders &amp; Spend</th>
+<th class="py-space-sm px-space-md text-center">Role Status</th>
+<th class="py-space-sm px-space-md text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-transparent font-body-sm text-body-sm">%%rows%%</tbody>
+</table>
+</div>
+<!-- Table Pagination Bar -->
+<div class="px-space-md py-space-sm bg-surface-container-low flex flex-col sm:flex-row items-center justify-between gap-space-sm font-label-code text-label-sm text-secondary">%%pagination%%</div>
+</div>
+<!-- RIGHT COLUMN: SELECTED USER DETAIL & VERIFICATION DRAWER / INSPECTOR (4 COLS ON 2XL) -->
+<div class="2xl:col-span-4 flex flex-col gap-space-md">%%inspector%%</div>
+</div></main></div>

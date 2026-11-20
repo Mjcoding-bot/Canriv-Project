@@ -17,6 +17,9 @@ function canriv_page_url($slug) {
 
 function canriv_header() {
     $links = ['home' => 'Home', 'company-story' => 'Company Story', 'products-services' => 'Products & Services', 'catalog' => 'Shop', 'reviews' => 'Reviews', 'careers' => 'Careers', 'contact' => 'Contact'];
+    if (!empty(get_option('canriv_pages', [])['completed-projects'])) {
+        $links = array_slice($links, 0, 3, true) + ['completed-projects' => 'Completed Projects'] + $links;
+    }
     $navigation = '';
     foreach ($links as $slug => $label) {
         $current = ($slug === 'home' && is_front_page()) || is_page((int) (get_option('canriv_pages', [])[$slug] ?? 0));
@@ -25,7 +28,7 @@ function canriv_header() {
     $count = WC()->cart ? WC()->cart->get_cart_contents_count() : 0;
     $account = esc_url(canriv_page_url('account'));
     return '<header class="canriv-site-header"><div class="canriv-site-header-inner">' .
-        '<a class="canriv-site-brand" href="' . esc_url(canriv_page_url('home')) . '" aria-label="Canriv home"><span class="canriv-site-monogram">CR</span><span>CANRIV<small>AIRCON &amp; ELEVATORS PH</small></span></a>' .
+        '<a class="canriv-site-brand" href="' . esc_url(canriv_page_url('home')) . '" aria-label="Canriv home">' . canriv_snowman('canriv-site-monogram') . '<span>CANRIV<small>AIRCON SUPPLY &amp; INSTALLATION</small></span></a>' .
         '<nav class="canriv-site-nav" aria-label="Main navigation">' . $navigation . '</nav>' .
         '<div class="canriv-site-actions"><a class="canriv-site-cart" href="' . esc_url(canriv_page_url('cart')) . '" aria-label="Cart, ' . (int) $count . ' items">' .
         '<span class="material-symbols-outlined" aria-hidden="true">shopping_cart</span><span class="canriv-site-cart-count">' . (int) $count . '</span></a>' .
@@ -36,9 +39,56 @@ function canriv_header() {
         '<nav aria-label="Mobile navigation">' . $navigation . '<a href="' . $account . '">' . (is_user_logged_in() ? 'My Account' : 'Sign In') . '</a></nav></details></div></header>';
 }
 
+function canriv_snowman($class) {
+    return '<img class="' . esc_attr($class) . '" src="' . esc_url(plugins_url('assets/canriv-snowman.png', __FILE__)) . '" width="48" height="48" alt="">';
+}
+
+function canriv_company_section($section) {
+    ob_start();
+    require __DIR__ . '/assets/company-information.php';
+    return ob_get_clean();
+}
+
+function canriv_career_roles() {
+    return [
+        'hr-officer' => ['HR Officer', 'office', 'Coordinates recruitment and onboarding, maintains employee records, and helps staff with workplace questions.'],
+        'purchasing' => ['Purchasing', 'office', 'Sources equipment and supplies, compares supplier quotes, and tracks orders and delivery dates.'],
+        'project-supervisor' => ['Project Supervisor', 'operations', 'Coordinates installation crews, schedules, and materials on site, and tracks each project through handover.'],
+        'company-driver' => ['Company Driver', 'operations', 'Transports staff, tools, and air conditioning equipment between the office and job sites.'],
+        'ac-electrician' => ['AC Electrician', 'technical', 'Handles the electrical connections and checks required to install and service air conditioning units.'],
+        'ac-installer' => ['AC Installer', 'technical', 'Mounts indoor and outdoor units, connects piping and drainage, and tests the equipment before handover.'],
+        'head-engineer' => ['Head Engineer', 'technical', 'Leads the engineering team, reviews equipment requirements and project plans, and guides technical decisions on site.'],
+        'sales-marketing-assistant' => ['Sales and Marketing Assistant', 'office', 'Responds to product inquiries, helps prepare quotations, and supports promotions and customer follow-ups.'],
+        'safety-officer' => ['Safety Officer', 'operations', 'Helps crews identify site hazards, follow safe work practices, and document safety checks.'],
+        'billing-collection' => ['Billing and Collection', 'office', 'Prepares invoices, records customer payments, and follows up on outstanding balances.'],
+        'supervisor' => ['Supervisor', 'operations', 'Assigns day-to-day tasks, monitors team progress, and helps resolve operational issues.'],
+    ];
+}
+
+function canriv_career_role_markup($format) {
+    $groups = ['office' => ['Office', 'person'], 'operations' => ['Operations', 'inventory_2'], 'technical' => ['Technical', 'engineering']];
+    $html = '';
+    foreach (canriv_career_roles() as $slug => [$title, $group, $description]) {
+        if ($format === 'career-options') {
+            $html .= '<option value="' . esc_attr($slug) . '">' . esc_html($title) . '</option>';
+            continue;
+        }
+        [$department, $icon] = $groups[$group];
+        $html .= '<li class="canriv-career-role" data-job-role="' .
+            esc_attr($slug) . '" data-job-category="' . esc_attr($group) . '">' .
+            '<span class="material-symbols-outlined canriv-career-icon" aria-hidden="true">' . esc_html($icon) . '</span>' .
+            '<div class="canriv-career-copy"><p class="font-label-code text-label-sm uppercase text-primary">' . esc_html($department) . '</p>' .
+            '<h3 class="font-headline-sm text-headline-sm text-on-surface">' . esc_html($title) . '</h3>' .
+            '<p class="canriv-career-description">' . esc_html($description) . '</p></div>' .
+            '<a class="canriv-career-interest" href="#apply-form" data-apply-role="' . esc_attr($slug) .
+            '" aria-label="' . esc_attr('Express interest in ' . $title) . '">Express interest <span aria-hidden="true">→</span></a></li>';
+    }
+    return $html;
+}
+
 function canriv_footer() {
     $groups = [
-        'Company' => ['company-story' => 'Company story', 'products-services' => 'Products & services', 'careers' => 'Careers', 'contact' => 'Contact us'],
+        'Company' => ['company-story' => 'Company story', 'products-services' => 'Products & services', 'completed-projects' => 'Completed projects', 'careers' => 'Careers', 'contact' => 'Contact us'],
         'Customers' => ['catalog' => 'Shop equipment', 'reservation' => 'Request pickup', 'reviews' => 'Product reviews', 'account' => 'My account'],
     ];
     $icon = static fn($name) => '<span class="material-symbols-outlined" aria-hidden="true">' . esc_html($name) . '</span>';
@@ -52,13 +102,16 @@ function canriv_footer() {
         '<div>' . $icon('engineering') . '<span>Installation & service<strong>Support for your equipment</strong></span></div>' .
         '<div>' . $icon('inventory_2') . '<span>Equipment reservations<strong>Request a pickup schedule</strong></span></div></div>' .
         '<div class="canriv-footer-grid"><div class="canriv-footer-brand">' .
-        '<a class="canriv-footer-logo" href="' . esc_url(canriv_page_url('home')) . '"><span class="canriv-footer-monogram">CR</span>' .
+        '<a class="canriv-footer-logo" href="' . esc_url(canriv_page_url('home')) . '">' . canriv_snowman('canriv-footer-monogram') .
         '<span class="canriv-footer-wordmark">CANRIV<small>CANRIV-J CORPORATION</small></span></a>' .
-        '<p>Cooling, ventilation, and equipment solutions for the spaces where you live and work.</p>' .
+        '<p>Mechanical contracting, HVAC supply and installation, and elevator systems in the Philippines.</p>' .
         '<a class="canriv-footer-story" href="' . esc_url(canriv_page_url('company-story')) . '">Discover our story ' . $icon('arrow_forward') . '</a></div>';
     foreach ($groups as $heading => $links) {
         $html .= '<nav class="canriv-footer-column" aria-label="' . esc_attr($heading . ' links') . '"><h2>' . esc_html($heading) . '</h2>';
         foreach ($links as $slug => $label) {
+            if ($slug === 'completed-projects' && empty(get_option('canriv_pages', [])[$slug])) {
+                continue;
+            }
             $html .= '<a href="' . esc_url(canriv_page_url($slug)) . '">' . esc_html($label) . '</a>';
         }
         $html .= '</nav>';
@@ -68,7 +121,7 @@ function canriv_footer() {
         '<a href="tel:+639454481254">' . $icon('call') . '<span><small>CALL FOR INQUIRIES</small>0945 448 1254</span></a>' .
         '<a class="canriv-footer-contact-link" href="' . esc_url(canriv_page_url('contact')) . '">Send an inquiry ' . $icon('north_east') . '</a></div></div>' .
         '<div class="canriv-footer-bottom"><small>&copy; ' . esc_html(wp_date('Y')) . ' Canriv-J Corporation. All rights reserved.</small>' .
-        '<a href="' . esc_url(canriv_page_url('contact')) . '">Contact Canriv</a></div></div></footer>';
+        '<a href="https://www.facebook.com/CanrivJCorp">Canriv-J Corporation on Facebook</a></div></div></footer>';
 }
 
 add_action('template_redirect', function () {
@@ -95,6 +148,23 @@ add_action('template_redirect', function () {
 add_filter('woocommerce_login_redirect', function ($redirect, $user) {
     return user_can($user, 'manage_options') ? canriv_page_url('order-management') : $redirect;
 }, 10, 2);
+
+add_action('woocommerce_before_customer_login_form', function () {
+    echo '<div class="canriv-signin"><aside class="canriv-signin-showcase">' .
+        '<p class="canriv-signin-label">Canriv customer portal</p><h2>Integrated Climate<br><span>&amp; Vertical Transit</span></h2>' .
+        '<p>Shop air conditioners, view your orders, and manage your delivery details in one place.</p>' .
+        '<div class="canriv-signin-features"><div><strong>Orders</strong><p>View your purchases and their status.</p></div>' .
+        '<div><strong>Addresses</strong><p>Manage saved billing and delivery details.</p></div></div>' .
+        '<div class="canriv-signin-support"><strong>Need help?</strong><p><a href="tel:+639454481254">0945 448 1254</a> · <a href="mailto:sales@canriv.com">sales@canriv.com</a></p></div>' .
+        '</aside><section class="canriv-signin-card" aria-labelledby="canriv-signin-title">' .
+        '<p class="canriv-signin-label">Customer access</p><h1 id="canriv-signin-title">Sign in to your Canriv account</h1>' .
+        '<p>Use your email address or username to access your account.</p>';
+});
+
+add_action('woocommerce_after_customer_login_form', function () {
+    echo '<p class="canriv-signin-register">New to Canriv? <a href="' . esc_url(canriv_page_url('registration')) .
+        '">Create a customer account</a>.</p></section></div>';
+});
 
 add_action('wp_enqueue_scripts', function () {
     $slug = array_search(get_queried_object_id(), get_option('canriv_pages', []));
@@ -152,21 +222,127 @@ function canriv_product($sku) {
     return isset($ids[$sku]) ? wc_get_product($ids[$sku]) : false;
 }
 
-function canriv_form_message() {
+require_once __DIR__ . '/customer-account.php';
+
+function canriv_cart_has_checkout() {
+    return is_page(wc_get_page_id('cart')) && WC()->cart && !WC()->cart->is_empty();
+}
+
+add_filter('woocommerce_is_checkout', function ($checkout) {
+    return $checkout || canriv_cart_has_checkout();
+});
+
+function canriv_purchase_layout($checkout) {
+    $combined = !$checkout && canriv_cart_has_checkout();
+    $checkout = $checkout || $combined;
+    $content = do_shortcode($checkout ? '[woocommerce_checkout]' : '[woocommerce_cart]');
+    if ($checkout && is_wc_endpoint_url()) {
+        return $content;
+    }
+    if ($checkout && !is_user_logged_in() && WC()->checkout()->is_registration_required() &&
+        !WC()->checkout()->is_registration_enabled()) {
+        $content = '<section class="canriv-purchase-summary"><h2>Sign in to check out</h2>' .
+            '<p>Your items will be here when you return.</p><a class="canriv-button" href="' .
+            esc_url(canriv_page_url('account')) . '">Sign in</a> <a href="' .
+            esc_url(canriv_page_url('registration')) . '">Create an account</a></section>';
+    }
+    if ($combined) {
+        $content .= '<details id="canriv-edit-cart" class="canriv-purchase-edit"><summary>Edit quantities, remove items, or apply a coupon</summary>' .
+            do_shortcode('[woocommerce_cart]') . '</details>';
+    }
+    $steps = ['Cart', 'Delivery details', 'Payment method', 'Order confirmation'];
+    $active = $checkout ? 1 : 0;
+    $html = '<div class="canriv-purchase ' . ($checkout ? 'canriv-purchase-checkout' : 'canriv-purchase-cart') . '">';
+    $html .= '<header class="canriv-purchase-heading"><div><h1>' .
+        ($checkout ? 'Secure order checkout' : 'Shopping cart') . '</h1></div></header>';
+    $html .= '<ol class="canriv-purchase-steps" aria-label="Order progress">';
+    foreach ($steps as $index => $label) {
+        $state = $index === $active ? ' aria-current="step"' : '';
+        $html .= '<li' . $state . '><span aria-hidden="true">' . ($index < $active ? '✓' : $index + 1) .
+            '</span><div><small>Step ' . ($index + 1) . '</small><strong>' . esc_html($label) . '</strong></div></li>';
+    }
+    return $html . '</ol><div class="canriv-purchase-content">' . $content . '</div></div>';
+}
+
+add_action('woocommerce_checkout_before_customer_details', function () {
+    if (!is_checkout()) {
+        return;
+    }
+    echo '<div class="canriv-purchase-details"><section class="canriv-purchase-fulfillment">' .
+        '<h2><span class="material-symbols-outlined" aria-hidden="true">local_shipping</span> Fulfillment &amp; site dispatch</h2>' .
+        '<div class="canriv-fulfillment-choice"><span class="material-symbols-outlined" aria-hidden="true">warehouse</span>' .
+        '<div><strong>Delivery or pickup</strong><p>Enter your site address to see available fulfillment options in the order summary.</p></div></div>' .
+        '</section>';
+});
+
+add_action('woocommerce_checkout_after_customer_details', function () {
+    if (!is_checkout()) {
+        return;
+    }
+    echo '<section class="canriv-purchase-payment" aria-labelledby="canriv-payment-heading"><h2 id="canriv-payment-heading">' .
+        '<span class="material-symbols-outlined" aria-hidden="true">payments</span> Payment method selection</h2>';
+    woocommerce_checkout_payment();
+    echo '</section></div>';
+});
+
+add_action('wp', function () {
+    if (is_checkout()) {
+        remove_action('woocommerce_checkout_order_review', 'woocommerce_checkout_payment', 20);
+    }
+});
+
+add_action('woocommerce_checkout_before_order_review_heading', function () {
+    if (is_checkout()) {
+        echo '<section class="canriv-purchase-summary" aria-labelledby="order_review_heading">';
+    }
+});
+
+add_action('woocommerce_checkout_after_order_review', function () {
+    if (is_checkout()) {
+        if (canriv_cart_has_checkout()) {
+            echo '<a class="canriv-summary-edit" href="#canriv-edit-cart">Edit cart or apply a coupon</a>';
+        }
+        echo '<button type="button" class="canriv-summary-submit" hidden>Place order</button></section>';
+    }
+});
+
+add_filter('woocommerce_checkout_cart_item_quantity', function ($quantity, $item) {
+    return $item['data']->get_image('woocommerce_thumbnail', ['class' => 'canriv-summary-product-image', 'alt' => '']) . $quantity;
+}, 10, 2);
+
+add_filter('woocommerce_checkout_fields', function ($fields) {
+    $priorities = ['first_name' => 10, 'last_name' => 20, 'phone' => 30, 'email' => 40, 'company' => 45, 'country' => 50, 'state' => 60, 'city' => 70, 'postcode' => 80, 'address_1' => 90, 'address_2' => 100];
+    foreach ($priorities as $key => $priority) {
+        if (isset($fields['billing']['billing_' . $key])) {
+            $fields['billing']['billing_' . $key]['priority'] = $priority;
+        }
+    }
+    return $fields;
+});
+
+function canriv_form_message($registration = false) {
     $messages = [
         'received' => ['Request received. Canriv must confirm stock and scheduling before pickup.', 'success'],
         'sent' => ['Your inquiry was saved for Canriv staff.', 'success'],
-        'registered' => ['Account created. You can now sign in.', 'success'],
+        'registered' => ['Account created. Sign in to continue.', 'success'],
         'reviewed' => ['Your review was submitted for moderation.', 'success'],
         'applied' => ['Your application was saved for the Canriv team to review.', 'success'],
         'invalid' => ['Please check the required fields and submit again.', 'error'],
+        'registration_phone' => ['Enter a Philippine mobile number such as 09171234567 or +639171234567.', 'error'],
+        'registration_password' => ['Use a unique password of 8–128 characters and make sure both fields match.', 'error'],
+        'registration_address' => ['Enter your complete delivery address and a four-digit postal code.', 'error'],
+        'registration_signed_in' => ['You are already signed in. Sign out before creating another account.', 'error'],
         'duplicate' => ['An account already exists for this email address. Please sign in or reset your password.', 'error'],
         'failed' => ['We could not save your submission. Please try again.', 'error'],
     ];
     $status = sanitize_key($_GET['canriv_status'] ?? '');
     if (isset($messages[$status])) {
         [$message, $kind] = $messages[$status];
-        return '<p class="canriv-notice ' . esc_attr($kind) . '" role="status">' . esc_html($message) . '</p>';
+        $target = $registration ? ' id="registration-result" tabindex="-1"' : '';
+        $next = $registration && $status === 'registered'
+            ? ' <a href="' . esc_url(canriv_page_url('account')) . '">Sign in</a>'
+            : '';
+        return '<p' . $target . ' class="canriv-notice ' . esc_attr($kind) . '" role="status">' . esc_html($message) . $next . '</p>';
     }
     return '';
 }
@@ -180,7 +356,7 @@ function canriv_registration_provinces() {
 }
 
 function canriv_fields($kind) {
-    return canriv_form_message() . '<input type="hidden" name="action" value="canriv_submit"><input type="hidden" name="kind" value="' .
+    return canriv_form_message($kind === 'register') . '<input type="hidden" name="action" value="canriv_submit"><input type="hidden" name="kind" value="' .
         esc_attr($kind) . '">' . ($kind === 'review' ? '<input type="hidden" id="review-photo-limit" value="' . min(15 * MB_IN_BYTES, wp_max_upload_size()) . '">' : '') .
         wp_nonce_field('canriv_' . $kind, '_canriv_nonce', false, false);
 }
@@ -321,7 +497,8 @@ function canriv_submit() {
         wp_die('Unknown form.', '', ['response' => 400]);
     }
     $finish = function ($status) use ($routes, $kind) {
-        wp_safe_redirect(add_query_arg('canriv_status', $status, canriv_page_url($routes[$kind])));
+        $url = add_query_arg('canriv_status', $status, canriv_page_url($routes[$kind]));
+        wp_safe_redirect($url . ($kind === 'register' ? '#registration-result' : ''), 303);
         exit;
     };
     if (!wp_verify_nonce($text('_canriv_nonce'), 'canriv_' . $kind)) {
@@ -338,29 +515,53 @@ function canriv_submit() {
     }
     if ($kind === 'register') {
         $phone = preg_replace('/[\s()-]+/', '', $phone);
-        $city = $text('city');
-        $province = $text('province');
-        $provinces = WC()->countries->get_states('PH');
         $password = (string) wp_unslash(is_string($_POST['password'] ?? null) ? $_POST['password'] : '');
         $confirm = (string) wp_unslash(is_string($_POST['confirm'] ?? null) ? $_POST['confirm'] : '');
-        if (is_user_logged_in() || strlen($password) < 12 || strlen($password) > 72 ||
-            $password !== $confirm || !$text('terms') || !preg_match('/^(?:\+?63|0)?9\d{9}$/', $phone) ||
-            !isset($provinces[$province]) || !$city || !$text('barangay') || !$text('street') ||
-            !preg_match('/^\d{4}$/', $text('postcode'))) {
+        if (is_user_logged_in()) {
+            $finish('registration_signed_in');
+        }
+        if ($password !== $confirm || !canriv_password_is_allowed($password, $email)) {
+            $finish('registration_password');
+        }
+        if ($phone !== '' && !preg_match('/^(?:\+?63|0)?9\d{9}$/', $phone)) {
+            $finish('registration_phone');
+        }
+        if (!$text('first_name') || !$text('last_name') || !$text('terms')) {
             $finish('invalid');
+        }
+        $province = $text('province');
+        $address = [
+            'first_name' => $text('first_name'),
+            'last_name' => $text('last_name'),
+            'country' => 'PH',
+            'state' => $province,
+            'city' => $text('city'),
+            'address_1' => $text('street'),
+            'address_2' => $text('barangay'),
+            'postcode' => $text('postcode'),
+        ];
+        if (!array_key_exists($province, WC()->countries->get_states('PH')) || !$address['city'] ||
+            !$address['address_1'] || !$address['address_2'] || !preg_match('/^\d{4}$/', $address['postcode'])) {
+            $finish('registration_address');
         }
         if (email_exists($email)) {
             $finish('duplicate');
         }
-        $account = wc_create_new_customer($email, '', $password, ['display_name' => $name]);
+        $account = wc_create_new_customer($email, '', $password, [
+            'display_name' => $name,
+            'first_name' => $text('first_name'),
+            'last_name' => $text('last_name'),
+        ]);
         if (is_wp_error($account)) {
             $finish(email_exists($email) ? 'duplicate' : 'failed');
         }
         $customer = new WC_Customer($account);
-        $customer->set_billing_phone('+63' . substr(preg_replace('/\D/', '', $phone), -10));
-        $address = ['first_name' => $text('first_name'), 'last_name' => $text('last_name'), 'country' => 'PH', 'state' => $province, 'city' => $city, 'postcode' => $text('postcode'), 'address_1' => $text('street'), 'address_2' => $text('barangay')];
-        foreach (['billing', 'shipping'] as $type) {
-            foreach ($address as $key => $value) $customer->set_props([$type . '_' . $key => $value]);
+        foreach ($address as $field => $value) {
+            $customer->set_props(['billing_' . $field => $value, 'shipping_' . $field => $value]);
+        }
+        $customer->set_billing_email($email);
+        if ($phone !== '') {
+            $customer->set_billing_phone('+63' . substr($phone, -10));
         }
         $customer->save();
         $finish('registered');
@@ -411,11 +612,12 @@ function canriv_submit() {
     $message = $text('message', 2000);
     $record = ['Name' => $name, 'Email' => $email, 'Phone' => $phone];
     if ($kind === 'career') {
+        $role = canriv_career_roles()[$text('position')] ?? null;
         if (!$phone || !$text('consent') ||
-            !in_array($text('position'), ['rac-lead', 'elevator-rigging', 'vrf-engineer', 'elevator-pms', 'ac-cleaning', 'sales-exec', 'general-apprentice'], true) ||
+            !$role ||
             !in_array($text('experience'), ['fresh', '1-2', '3-5', '5+'], true) ||
-            !in_array($text('hub'), ['pampanga', 'baguio', 'pangasinan', 'ncr'], true)) $finish('invalid');
-        $record += ['Position' => $text('position'), 'Experience' => $text('experience'), 'Preferred hub' => $text('hub')];
+            !in_array($text('hub'), ['nueva-ecija', 'pampanga', 'baguio', 'pangasinan', 'ncr'], true)) $finish('invalid');
+        $record += ['Position' => $role[0], 'Experience' => $text('experience'), 'Preferred work area' => $text('hub')];
     } elseif ($kind === 'reserve') {
         $product = canriv_product($text('sku'));
         $date = $text('date');
@@ -551,65 +753,38 @@ function canriv_ops_header() {
         esc_url(wp_logout_url(canriv_page_url('account'))) . '">Sign out</a></div></header>';
 }
 
+require_once __DIR__ . '/registered-users.php';
+require_once __DIR__ . '/order-management.php';
+require_once __DIR__ . '/audience-analytics.php';
+require_once __DIR__ . '/product-details.php';
+
+add_filter('woocommerce_gateway_title', function ($title, $gateway) {
+    if ($gateway !== 'cod' || (!is_checkout() && !wp_doing_ajax())) {
+        return $title;
+    }
+    $methods = WC()->session ? WC()->session->get('chosen_shipping_methods', []) : [];
+    if (!$methods) {
+        return $title;
+    }
+    foreach ($methods as $method) {
+        if (strtok($method, ':') !== 'local_pickup') {
+            return 'Cash on Delivery';
+        }
+    }
+    return 'Pay at pickup';
+}, 10, 2);
+
 function canriv_ops_dashboard($type) {
     if (!current_user_can('manage_options')) {
         return '';
     }
-    $slug = ['orders' => 'order-management', 'users' => 'registered-users', 'analytics' => 'canriv-analytics'][$type];
-    $metrics = match ($type) {
-        'orders' => [
-        'Processing orders' => wc_orders_count('processing'),
-        'Completed orders' => wc_orders_count('completed'),
-        'Pending payment' => wc_orders_count('pending'),
-    ],
-        'users' => [
-        'Registered customers' => count_users()['avail_roles']['customer'] ?? 0,
-        'Recent customer records' => count(get_users(['role' => 'customer', 'number' => 50, 'fields' => 'ID'])),
-    ],
-        default => [],
-    };
-    $cards = '';
-    if ($metrics) {
-        $cards = '<div class="canriv-ops-metrics">';
-        foreach ($metrics as $label => $value) {
-            $cards .= '<div><span>' . esc_html($label) . '</span><strong>' . esc_html(number_format_i18n($value)) . '</strong></div>';
-        }
-        $cards .= '</div>';
-    }
-    $replacements = ['%%records%%' => $cards . '<section class="canriv-ops-records">' . canriv_admin_window($type) . '</section>'];
-    foreach (['home', 'order-management', 'registered-users', 'canriv-analytics'] as $route) {
-        $replacements['%%' . $route . '%%'] = esc_url(canriv_page_url($route));
-    }
-    return strtr(file_get_contents(__DIR__ . '/assets/' . $slug . '.html'), $replacements);
-}
-
-function canriv_admin_window($type) {
-    if (!current_user_can('manage_options')) {
-        return '';
+    if ($type === 'users') {
+        return canriv_registered_directory();
     }
     if ($type === 'orders') {
-        $rows = [];
-        foreach (wc_get_orders(['limit' => 25, 'orderby' => 'date', 'order' => 'DESC']) as $order) {
-            $rows[] = [$order->get_order_number(), $order->get_date_created()->date_i18n('M j, Y'), $order->get_formatted_billing_full_name(), wc_get_order_status_name($order->get_status()), html_entity_decode(wp_strip_all_tags($order->get_formatted_order_total()), ENT_QUOTES, 'UTF-8')];
-        }
-        $requests = get_posts(['post_type' => 'canriv_request', 'post_status' => 'private', 'numberposts' => 25, 'meta_key' => 'canriv_request_type', 'meta_value' => 'reserve']);
-        return '<h2>Recent orders</h2>' . canriv_table(['Order', 'Date', 'Customer', 'Status', 'Total'], $rows) .
-            canriv_staff_link('admin.php?page=wc-orders', 'Manage all orders') . '<h2>Pickup requests</h2>' .
-            canriv_table(['Reference', 'Received'], array_map(fn($request) => ['#' . $request->ID, get_the_date('M j, Y', $request)], $requests)) .
-            canriv_staff_link('edit.php?post_type=canriv_request', 'Manage reservation and inquiry records');
+        return canriv_order_directory();
     }
-    if ($type === 'users') {
-        $rows = [];
-        foreach (get_users(['role' => 'customer', 'number' => 50, 'orderby' => 'registered', 'order' => 'DESC']) as $user) {
-            $rows[] = [$user->display_name, $user->user_email, $user->user_registered];
-        }
-        return '<h2>Registered customers</h2>' . canriv_table(['Name', 'Email', 'Registered'], $rows) .
-            canriv_staff_link('users.php?role=customer', 'View all customers');
-    }
-    return '<h2>Audience activity</h2><p>Use Google Site Kit to connect the company’s GA4 property and view traffic reports.</p>' .
-        canriv_staff_link('admin.php?page=googlesitekit-dashboard', 'Open Google Site Kit') .
-        '<h2>Store performance</h2><p>View sales, orders, and product performance from WooCommerce.</p>' .
-        canriv_staff_link('admin.php?page=wc-admin&path=/analytics/overview', 'Open WooCommerce Analytics');
+    return canriv_audience_dashboard();
 }
 
 // Elementor must render these widgets after its cache so carts, nonces, and records stay current.
@@ -625,10 +800,15 @@ add_filter('elementor/widget/render_content', function ($content, $widget) {
         $type = $match[1];
         return match ($type) {
             'header' => is_page(['order-management', 'registered-users', 'canriv-analytics']) ? canriv_ops_header() : canriv_header(),
+            'company-brands', 'company-team', 'company-quote', 'company-project-story', 'aircon-shop', 'aircon-shop-photos' => canriv_company_section($type),
+            'vertical-transport', 'vertical-transport-summary' => canriv_company_section($type),
+            'home-featured' => canriv_company_section($type),
+            'vertical-transport-url' => esc_url(canriv_page_url('products-services') . '#mitsubishi-vertical-transport'),
+            'aircon-showroom-url' => esc_url(canriv_page_url('catalog') . '#mitsubishi-aircon'),
             'footer' => is_page(['order-management', 'registered-users', 'canriv-analytics']) ? '' : canriv_footer(),
-            'cart' => do_shortcode('[woocommerce_cart]'),
-            'checkout' => do_shortcode('[woocommerce_checkout]'),
-            'account' => do_shortcode('[woocommerce_my_account]'),
+            'cart' => canriv_purchase_layout(false),
+            'checkout' => canriv_purchase_layout(true),
+            'account' => canriv_customer_account(),
             'registration-fields' => canriv_fields('register'),
             'registration-action' => esc_url(admin_url('admin-post.php')),
             'registration-provinces' => canriv_registration_provinces(),
@@ -637,6 +817,7 @@ add_filter('elementor/widget/render_content', function ($content, $widget) {
             'review-fields' => canriv_fields('review'),
             'contact-fields' => canriv_fields('contact'),
             'career-fields' => canriv_fields('career'),
+            'career-roles', 'career-options' => canriv_career_role_markup($type),
             'photo-limit' => esc_html(size_format(min(15 * MB_IN_BYTES, wp_max_upload_size()))),
             'upload-bytes' => (string) min(15 * MB_IN_BYTES, wp_max_upload_size()),
             'cart-count' => WC()->cart ? (string) WC()->cart->get_cart_contents_count() : '0',
