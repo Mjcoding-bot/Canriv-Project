@@ -8,13 +8,6 @@ add_filter('body_class', function ($classes) {
     return $classes;
 });
 
-add_filter('wc_order_statuses', function ($statuses) {
-    if (is_account_page() && is_wc_endpoint_url('view-order') && isset($statuses['wc-processing'])) {
-        $statuses['wc-processing'] = 'Accepted';
-    }
-    return $statuses;
-});
-
 add_action('woocommerce_view_order', function () {
     echo '<a class="canriv-account-back-link" href="' . esc_url(wc_get_page_permalink('myaccount')) . '"><span class="material-symbols-outlined" aria-hidden="true">arrow_back</span> Back to My Account</a>';
 }, 1);

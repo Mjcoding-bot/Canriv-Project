@@ -14,7 +14,7 @@
     </nav>
 <?php elseif ($name === 'filters') : ?>
     <form class="flex flex-col sm:flex-row gap-space-sm w-full" method="get" action="<?= esc_url($base) ?>" aria-label="Filter orders">
-        <label class="canriv-directory-search bg-surface-container-low"><?= $icon('search') ?><span class="screen-reader-text">Order number</span><input type="search" name="order_ref" placeholder="Search by order number" value="<?= esc_attr($filters['order_ref'] ?? '') ?>"></label>
+        <label class="canriv-directory-search bg-surface-container-low"><?= $icon('search') ?><span class="screen-reader-text">Search orders</span><input type="search" name="order_ref" placeholder="Search orders..." value="<?= esc_attr($filters['order_ref'] ?? '') ?>"></label>
         <select class="canriv-directory-control bg-surface-container-low" name="order_state" aria-label="Order status">
             <option value="">All statuses</option>
             <?php foreach ($statuses as $key => $label) : ?><option value="<?= esc_attr($key) ?>" <?php selected($filters['order_state'] ?? '', $key); ?>><?= esc_html($label) ?></option><?php endforeach; ?>
@@ -29,28 +29,38 @@
 <?php elseif ($name === 'rows') : ?>
     <?php if (!$orders) : ?><tr><td colspan="7" class="p-space-md">No orders match these filters.</td></tr><?php endif; ?>
     <?php foreach ($orders as $order) : ?>
-        <?php $needs_decision = in_array($order->get_status(), ['pending', 'on-hold'], true) || ($order->has_status('processing') && $order->get_meta('canriv_admin_decision') !== 'accepted'); ?>
+        <?php $needs_decision = in_array($order->get_status(), ['pending', 'on-hold', 'processing'], true) && $order->get_meta('canriv_admin_decision') !== 'accepted'; ?>
+        <?php $can_complete = $order->has_status('processing') && $order->get_meta('canriv_admin_decision') === 'accepted'; ?>
         <tr class="<?= $selected && $selected->get_id() === $order->get_id() ? 'bg-surface-container-low' : 'hover:bg-surface-container-low' ?>">
             <td class="p-space-md"><strong class="font-label-code text-primary">#<?= esc_html($order->get_order_number()) ?></strong><div class="text-secondary"><?= esc_html(wc_format_datetime($order->get_date_created())) ?></div></td>
             <td class="p-space-md"><strong><?= esc_html($order->get_formatted_billing_full_name() ?: 'Guest') ?></strong><div class="text-secondary"><?= esc_html($order->get_billing_company()) ?></div></td>
-            <td class="p-space-md"><?php foreach ($order->get_items() as $item) : ?><div><?= esc_html($item->get_quantity() . ' × ' . $item->get_name()) ?></div><?php endforeach; ?></td>
+            <td class="p-space-md"><?php foreach ($order->get_items() as $item) : ?><div class="canriv-order-item"><?= esc_html($item->get_quantity() . ' × ' . $item->get_name()) ?></div><?php endforeach; ?></td>
             <td class="p-space-md"><?= $icon('local_shipping') ?> <?= esc_html($order->get_shipping_method() ?: '—') ?></td>
             <td class="p-space-md"><strong><?= wp_kses_post($order->get_formatted_order_total()) ?></strong><div class="text-secondary"><?= esc_html($order->get_payment_method_title()) ?></div></td>
-            <td class="p-space-md"><span class="canriv-directory-badge bg-primary-fixed text-on-primary-fixed" data-status="<?= esc_attr(ucwords(str_replace('wc-', '', $order->get_status()))) ?>"><?= esc_html(wc_get_order_status_name($order->get_status())) ?></span></td>
+            <?php $decision_label = canriv_order_decision_label($order); ?>
+            <?php $status_icon = ['accepted' => 'check', 'pending' => 'schedule', 'cancelled' => 'close', 'canceled' => 'close'][strtolower($decision_label)] ?? ''; ?>
+            <td class="p-space-md"><span class="canriv-directory-badge bg-primary-fixed text-on-primary-fixed" data-status="<?= esc_attr($decision_label) ?>"><?php if ($status_icon) : ?><span class="material-symbols-outlined canriv-status-icon" aria-hidden="true"><?= esc_html($status_icon) ?></span><?php endif; ?><?= esc_html($decision_label) ?></span></td>
             <td class="p-space-md"><div class="canriv-order-actions">
-                <a class="canriv-directory-control bg-surface-container" href="<?= esc_url($url(['orders_page' => $page, 'inspect_order' => $order->get_id()]) . '#inspector-panel') ?>" aria-label="<?= esc_attr('Inspect order ' . $order->get_order_number()) ?>"><?= $icon('visibility') ?></a>
+                <a class="canriv-directory-control bg-surface-container" href="<?= esc_url($url(['orders_page' => $page, 'inspect_order' => $order->get_id()]) . '#inspector-panel') ?>" title="View details" aria-label="<?= esc_attr('Inspect order ' . $order->get_order_number()) ?>"><?= $icon('visibility') ?></a>
                 <?php if ($needs_decision) : ?>
                     <form method="post" action="<?= esc_url(admin_url('admin-post.php')) ?>">
                         <input type="hidden" name="action" value="canriv_update_order"><input type="hidden" name="order_id" value="<?= (int) $order->get_id() ?>"><input type="hidden" name="decision" value="accept">
                         <?php wp_nonce_field('canriv_update_order_' . $order->get_id()); ?>
-                        <button class="canriv-directory-control bg-primary text-on-primary" type="submit">Accept</button>
+                        <button class="canriv-directory-control bg-primary text-on-primary is-accept" type="submit"><?= $icon('check') ?> Accept</button>
                     </form>
                 <?php endif; ?>
                 <?php if ($needs_decision) : ?>
                     <form method="post" action="<?= esc_url(admin_url('admin-post.php')) ?>">
                         <input type="hidden" name="action" value="canriv_update_order"><input type="hidden" name="order_id" value="<?= (int) $order->get_id() ?>"><input type="hidden" name="decision" value="decline">
                         <?php wp_nonce_field('canriv_update_order_' . $order->get_id()); ?>
-                        <button class="canriv-directory-control bg-surface-container-high" type="submit" <?= $order->is_paid() ? 'title="Cancels the order; a refund must be issued separately." onclick="return confirm(\'This order is paid. Declining cancels it but does not issue a refund. Continue?\')"' : '' ?>>Decline</button>
+                        <button class="canriv-directory-control bg-surface-container-high is-decline" type="submit" <?= $order->is_paid() ? 'title="Cancels the order; a refund must be issued separately." onclick="return confirm(\'This order is paid. Declining cancels it but does not issue a refund. Continue?\')"' : '' ?>><?= $icon('close') ?> Decline</button>
+                    </form>
+                <?php endif; ?>
+                <?php if ($can_complete) : ?>
+                    <form method="post" action="<?= esc_url(admin_url('admin-post.php')) ?>">
+                        <input type="hidden" name="action" value="canriv_update_order"><input type="hidden" name="order_id" value="<?= (int) $order->get_id() ?>"><input type="hidden" name="decision" value="complete">
+                        <?php wp_nonce_field('canriv_update_order_' . $order->get_id()); ?>
+                        <button class="canriv-directory-control bg-primary text-on-primary canriv-order-complete-button" type="submit" title="Confirm delivery or pickup is fulfilled." onclick="return confirm('Finalize this order after delivery or pickup?')"><?= $icon('task_alt') ?> Finalize order</button>
                     </form>
                 <?php endif; ?>
             </div></td>
@@ -139,7 +149,7 @@
     <header class="p-space-md bg-inverse-surface text-inverse-on-surface flex items-center gap-space-sm">
         <?= $icon('manage_search') ?><div><span class="font-label-code text-label-sm uppercase"><?= $selected_request ? 'Request details' : 'Detailed record inspector' ?></span><h2 class="font-headline-sm text-headline-sm"><?= $selected_request ? '#' . (int) $selected_request->ID : ($selected ? '#' . esc_html($selected->get_order_number()) : 'Order details') ?></h2></div>
     </header>
-    <div class="p-space-lg flex flex-col gap-space-md">
+    <div class="canriv-inspector-body p-space-lg flex flex-col gap-space-md">
         <?php if ($selected_request) : ?>
             <?php $request_status = get_post_meta($selected_request->ID, 'canriv_request_status', true) ?: 'pending'; ?>
             <section class="canriv-request-inspector-summary">
@@ -169,9 +179,16 @@
             </section>
             <section class="bg-surface-container-low p-space-md rounded-lg">
                 <h3 class="font-label-code text-label-sm uppercase text-primary">Current status</h3>
-                <p><?= esc_html(wc_get_order_status_name($selected->get_status())) ?> · <?= esc_html($selected->is_paid() ? 'Paid' : 'Payment not recorded') ?></p>
+                <p><?= esc_html(canriv_order_decision_label($selected)) ?> · <?= esc_html($selected->is_paid() ? 'Paid' : 'Payment not recorded') ?></p>
                 <strong><?= wp_kses_post($selected->get_formatted_order_total()) ?></strong>
             </section>
+            <?php if ($selected->has_status('processing') && $selected->get_meta('canriv_admin_decision') === 'accepted') : ?>
+                <form method="post" action="<?= esc_url(admin_url('admin-post.php')) ?>">
+                    <input type="hidden" name="action" value="canriv_update_order"><input type="hidden" name="order_id" value="<?= (int) $selected->get_id() ?>"><input type="hidden" name="decision" value="complete">
+                    <?php wp_nonce_field('canriv_update_order_' . $selected->get_id()); ?>
+                    <button class="canriv-directory-control bg-primary text-on-primary canriv-order-complete-button" type="submit" title="Confirm delivery or pickup is fulfilled." onclick="return confirm('Finalize this order after delivery or pickup?')"><?= $icon('task_alt') ?> Finalize order</button>
+                </form>
+            <?php endif; ?>
             <section>
                 <h3 class="font-label-code text-label-sm uppercase text-primary">Recent order notes</h3>
                 <?php $notes = wc_get_order_notes(['order_id' => $selected->get_id(), 'limit' => 4]); ?>

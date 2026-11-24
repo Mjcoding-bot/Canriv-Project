@@ -99,10 +99,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const phone = document.getElementById('mobile');
     if (phone) {
+        phone.type = 'text';
+        phone.required = true;
+        phone.maxLength = 11;
+        phone.minLength = 11;
+        phone.inputMode = 'numeric';
+        phone.pattern = '09[0-9]{9}';
+        phone.autocomplete = 'tel-national';
         const validatePhone = () => {
-            const number = phone.value.replace(/[\s()-]+/g, '');
-            phone.setCustomValidity(number && !/^(?:\+?63|0)?9\d{9}$/.test(number)
-                ? 'Enter all 10 digits starting with 9, or use 0917 123 4567 or +63 917 123 4567.'
+            const number = phone.value.replace(/\D/g, '').slice(0, 11);
+            if (phone.value !== number) phone.value = number;
+            phone.setCustomValidity(number && !/^09\d{9}$/.test(number)
+                ? 'Enter exactly 11 digits starting with 09, such as 09171234567.'
                 : '');
         };
         phone.addEventListener('input', validatePhone);

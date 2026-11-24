@@ -7,6 +7,10 @@
 
 defined('ABSPATH') || exit;
 
+add_filter('get_site_icon_url', static function ($url, $size, $blog_id) {
+    return add_query_arg('ver', filemtime(__FILE__), plugins_url('assets/canriv-snowman.png', __FILE__));
+}, 10, 3);
+
 require_once __DIR__ . '/assets/equipment-catalog.php';
 
 function canriv_page_url($slug) {
@@ -299,22 +303,15 @@ add_filter('woocommerce_login_redirect', function ($redirect, $user) {
     return user_can($user, 'manage_options') ? canriv_page_url('order-management') : $redirect;
 }, 10, 2);
 
-add_action('woocommerce_before_customer_login_form', function () {
-    echo '<div class="canriv-signin"><aside class="canriv-signin-showcase">' .
-        '<p class="canriv-signin-label">Canriv customer portal</p><h2>Integrated Climate<br><span>&amp; Vertical Transit</span></h2>' .
-        '<p>Shop air conditioners, view your orders, and manage your delivery details in one place.</p>' .
-        '<div class="canriv-signin-features"><div><strong>Orders</strong><p>View your purchases and their status.</p></div>' .
-        '<div><strong>Addresses</strong><p>Manage saved billing and delivery details.</p></div></div>' .
-        '<div class="canriv-signin-support"><strong>Need help?</strong><p><a href="tel:+639454481254">0945 448 1254</a> · <a href="mailto:sales@canriv.com">sales@canriv.com</a></p></div>' .
-        '</aside><section class="canriv-signin-card" aria-labelledby="canriv-signin-title">' .
-        '<p class="canriv-signin-label">Customer access</p><h1 id="canriv-signin-title">Sign in to your Canriv account</h1>' .
-        '<p>Use your email address or username to access your account.</p>';
-});
-
-add_action('woocommerce_after_customer_login_form', function () {
-    echo '<p class="canriv-signin-register">New to Canriv? <a href="' . esc_url(canriv_page_url('registration')) .
-        '">Create a customer account</a>.</p></section></div>';
-});
+add_filter('woocommerce_locate_template', function ($template, $template_name) {
+    if ($template_name === 'myaccount/form-login.php') {
+        $custom = __DIR__ . '/templates/form-login.php';
+        if (is_file($custom)) {
+            return $custom;
+        }
+    }
+    return $template;
+}, 10, 2);
 
 add_action('wp_enqueue_scripts', function () {
     $slug = array_search(get_queried_object_id(), get_option('canriv_pages', []));
@@ -528,7 +525,7 @@ function canriv_form_message($registration = false) {
         'applied' => ['Your application was saved for the Canriv team to review.', 'success'],
         'invalid' => ['Please check the required fields and submit again.', 'error'],
         'invalid_phone' => ['Enter a valid Philippine mobile number, such as 0917 123 4567.', 'error'],
-        'registration_phone' => ['Enter a Philippine mobile number such as 09171234567 or +639171234567.', 'error'],
+        'registration_phone' => ['Enter an 11-digit Philippine mobile number starting with 09, for example 09171234567.', 'error'],
         'registration_password' => ['Use a unique password of 8–128 characters and make sure both fields match.', 'error'],
         'registration_address' => ['Enter your complete delivery address and a four-digit postal code.', 'error'],
         'registration_signed_in' => ['You are already signed in. Sign out before creating another account.', 'error'],
@@ -737,7 +734,7 @@ function canriv_submit() {
         $finish('invalid');
     }
     if ($kind === 'register') {
-        if ($phone === false) $finish('registration_phone');
+        if (!preg_match('/^09\d{9}$/', $text('phone', 32))) $finish('registration_phone');
         $password = (string) wp_unslash(is_string($_POST['password'] ?? null) ? $_POST['password'] : '');
         $confirm = (string) wp_unslash(is_string($_POST['confirm'] ?? null) ? $_POST['confirm'] : '');
         if (is_user_logged_in()) {
@@ -1114,6 +1111,11 @@ add_filter('elementor/widget/render_content', function ($content, $widget) {
     if ($widget->get_name() !== 'html') {
         return $content;
     }
+    if (str_contains($content, 'id="mobile"')) {
+        $content = str_replace('Philippine mobile number (optional)', 'Philippine mobile number *', $content);
+        $content = str_replace('<span>+63</span>', '<span>PH</span>', $content);
+        $content = str_replace('Enter 09, +63, or just the 10 digits starting with 9.', 'Enter 11 digits starting with 09, for example 09171234567.', $content);
+    }
     if (str_contains($content, '%%CANRIV:')) {
         $content = preg_replace_callback('/%%CANRIV:([a-z-]+)%%/', function ($match) {
         $type = $match[1];
@@ -1151,10 +1153,16 @@ add_filter('elementor/widget/render_content', function ($content, $widget) {
         };
         }, $content);
     }
-    return preg_replace_callback('/<input\b(?=[^>]*\bid=["\']contactNumber["\'])[^>]*>/i', static function ($match) {
+    $content = preg_replace_callback('/<input\b(?=[^>]*\bid=["\']contactNumber["\'])[^>]*>/i', static function ($match) {
         $input = preg_replace('/\s+(?:type|maxlength|minlength|pattern|inputmode|title|autocomplete)=(?:"[^"]*"|\'[^\']*\'|[^\s>]+)/i', '', $match[0]);
         $input = preg_replace('/\s*\/?\s*>$/', '', $input);
         return $input . ' type="text" maxlength="10" minlength="10" inputmode="numeric" pattern="9[0-9]{9}" autocomplete="tel-national" title="Enter 10 digits starting with 9, for example 9171234567.">';
+    }, $content);
+    return preg_replace_callback('/<input\b(?=[^>]*\bid=["\']mobile["\'])[^>]*>/i', static function ($match) {
+        $input = preg_replace('/\s+(?:type|maxlength|minlength|pattern|inputmode|title|autocomplete)=(?:"[^"]*"|\'[^\']*\'|[^\s>]+)/i', '', $match[0]);
+        $input = preg_replace('/\s+required(?=\s|\/?\s*>)/i', '', $input);
+        $input = preg_replace('/\s*\/?\s*>$/', '', $input);
+        return $input . ' type="text" required maxlength="11" minlength="11" inputmode="numeric" pattern="09[0-9]{9}" autocomplete="tel-national" title="Enter 11 digits starting with 09, for example 09171234567.">';
     }, $content);
 }, 10, 2);
 

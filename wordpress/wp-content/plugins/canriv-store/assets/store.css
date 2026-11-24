@@ -110,23 +110,94 @@ body .canriv-footer-contact > .canriv-footer-contact-link { justify-content:spac
 #registration-result { font: 500 .875rem/1.5 Inter, sans-serif; }
 #registration-result a { color: #00685f; font-weight: 700; text-decoration: underline; }
 #registration-result:focus { outline: 2px solid #00685f; outline-offset: 2px; }
-.canriv-panel:has(.canriv-signin) { width: min(calc(100% - 2rem), 1280px); padding: 0; background: transparent; box-shadow: none; }
-.canriv-panel:has(.canriv-signin) > h1, .canriv-signin-card > h2 { display: none; }
-.canriv-signin { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 1.5rem; }
-.canriv-signin-showcase, .canriv-signin-card { padding: clamp(1.35rem, 4vw, 3rem); border-radius: .85rem; box-shadow: 0 3px 15px #0b1c3014; }
-.canriv-signin-showcase { display: flex; flex-direction: column; color: #fff; background: radial-gradient(ellipse at top left, #164b50, transparent 70%), #1c2d42; }
-.canriv-signin-card { background: #fff; }
-.canriv-signin-showcase h2, .canriv-signin-card h1 { font-size: clamp(2rem, 4vw, 3.3rem); text-transform: uppercase; margin: .7rem 0; }
-.canriv-signin-showcase h2 span, .canriv-signin-showcase .canriv-signin-label, .canriv-signin-showcase a:not(.button) { color: #a3eee3; }
-.canriv-signin-label { color: #00685f; font: 600 .75rem/1.4 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: .05em; }
-.canriv-signin-features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; margin: 1rem 0 2rem; }
-.canriv-signin-features > div { padding: .85rem; background: #ffffff16; border-radius: .5rem; }
-.canriv-signin-support { margin-top: auto; padding-top: 1rem; border-top: 1px solid #ffffff36; }
-.canriv-signin-card form.woocommerce-form-login { border: 0; padding: 0; margin: 1.25rem 0; }
-.canriv-signin-card .woocommerce-form-login input.input-text { background: #edf1fc; border-color: #c9d5e8; min-height: 2.7rem; }
-.canriv-signin-card button.woocommerce-form-login__submit { display: block; float: none; width: 100%; margin: .75rem 0; padding: .8rem; background: #00685f; color: #fff; border-radius: .5rem; }
-.canriv-signin-register { padding-top: 1rem; border-top: 1px solid #dce5f4; }
-@media (max-width: 720px) { .canriv-signin { grid-template-columns: minmax(0, 1fr); } }
+.canriv-panel:has(.canriv-signin) { width: min(calc(100% - 1.5rem), 1120px); padding: 0; background: transparent; box-shadow: none; margin: 1.25rem auto; }
+.canriv-panel:has(.canriv-signin) > h1 { display: none; }
+.canriv-signin { --navy-a:#1b3446; --navy-b:#122537; --mint:#7fe6d8; --mint-soft:#a7f0e5; --teal:#11796b; --ink:#12283c; --muted:#5c6c7c; --line:#e2e9f1; --field:#eef3fb; padding: .65rem; background: #eef2f6; border: 1px solid #e3e9f1; border-radius: .7rem; color: var(--ink); font: 400 .875rem/1.45 Inter, sans-serif; }
+.canriv-signin-topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .4rem 1rem; padding: .55rem .7rem .65rem; border-bottom: 1px solid #dfe6ef; color: #64748b; font: 500 .6rem/1.4 'JetBrains Mono', monospace; letter-spacing: .01em; text-transform: uppercase; }
+.canriv-signin-meta { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .55rem; }
+.canriv-signin-meta b { color: #33465a; font-weight: 600; }
+.canriv-signin-meta .sep { color: #b7c3d0; }
+.canriv-signin-meta .mt { display: inline-flex; align-items: center; gap: .25rem; }
+.canriv-signin-meta .material-symbols-outlined { font-size: .95rem; color: #3f6ea8; }
+.canriv-signin-status { display: inline-flex; align-items: center; gap: .35rem; color: #0f7a5f; font-weight: 600; white-space: nowrap; }
+.canriv-signin-status::before { content: ""; width: .42rem; height: .42rem; border-radius: 50%; background: #18b56a; box-shadow: 0 0 0 3px #18b56a22; }
+.canriv-signin-main { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 8fr); gap: .85rem; padding: .85rem; background: #fff; border: 1px solid #e6ecf4; border-radius: .55rem; }
+.canriv-signin-showcase { display: flex; flex-direction: column; padding: 1.15rem 1.05rem; border-radius: .5rem; color: #fff; background: radial-gradient(circle at 12% 0%, var(--navy-a) 0%, var(--navy-b) 58%, #0f2133 100%); }
+.canriv-signin-eyebrow { display: flex; align-items: center; gap: .3rem; margin: 0 0 .7rem; color: var(--mint); font: 600 .56rem/1.3 'JetBrains Mono', monospace; letter-spacing: .09em; text-transform: uppercase; }
+.canriv-signin-eyebrow .material-symbols-outlined { font-size: .9rem; }
+.canriv-signin-showcase h2 { margin: 0 0 .6rem; font: 700 clamp(1.7rem, 3vw, 2.25rem)/.98 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: .01em; color: #fff; }
+.canriv-signin-showcase h2 span { display: block; color: var(--mint); }
+.canriv-signin .canriv-signin-lede { margin: 0 0 1rem; color: #b7c6d6; font-size: .72rem; line-height: 1.5; }
+.canriv-signin-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; margin-bottom: .7rem; }
+.canriv-signin-stats > div { padding: .65rem .7rem; background: #ffffff12; border: 1px solid #ffffff1f; border-radius: .4rem; }
+.canriv-signin-stats .label { display: block; margin-bottom: .25rem; color: var(--mint); font: 600 .54rem/1.3 'JetBrains Mono', monospace; letter-spacing: .07em; text-transform: uppercase; }
+.canriv-signin-stats strong { display: block; color: #fff; font: 700 1.45rem/1 'Barlow Condensed', sans-serif; }
+.canriv-signin-stats strong .accent { margin-left: .04em; color: var(--mint); font-size: .8em; }
+.canriv-signin .canriv-signin-stats p { margin: .3rem 0 0; color: #9fb2c4; font-size: .6rem; line-height: 1.35; }
+.canriv-signin-chart { padding: .6rem .7rem .65rem; background: #ffffff0d; border: 1px solid #ffffff1a; border-radius: .4rem; }
+.canriv-signin-chart .chart-head { display: flex; align-items: center; justify-content: space-between; gap: .4rem; margin-bottom: .5rem; color: var(--mint); font: 600 .52rem/1.3 'JetBrains Mono', monospace; letter-spacing: .06em; text-transform: uppercase; }
+.canriv-signin-chart .chart-head .accent { color: var(--mint-soft); }
+.canriv-signin-chart .chart-bars { display: flex; align-items: flex-end; gap: .22rem; height: 2.5rem; }
+.canriv-signin-chart .chart-bars span { flex: 1; background: linear-gradient(180deg, #7ae6d6, #28a698); border-radius: 1px 1px 0 0; }
+.canriv-signin-chart .chart-foot { display: flex; align-items: center; justify-content: space-between; margin-top: .45rem; color: #9fb2c4; font-size: .55rem; }
+.canriv-signin-chart .chart-foot .accent { color: #e8eef5; }
+.canriv-signin .canriv-signin-hotline { margin-top: auto; padding-top: .8rem; border-top: 1px solid #ffffff24; }
+.canriv-signin .canriv-signin-hotline .hotline-title { display: flex; align-items: center; gap: .3rem; margin: 0 0 .35rem; color: #fff; font: 600 .82rem/1.3 Inter, sans-serif; letter-spacing: .01em; }
+.canriv-signin .canriv-signin-hotline .hotline-title .material-symbols-outlined { color: var(--mint); font-size: .95rem; }
+.canriv-signin .canriv-signin-hotline p { margin: .2rem 0; color: #9fb2c4; font-size: .62rem; line-height: 1.4; }
+.canriv-signin .canriv-signin-hotline .hotline-contact { display: flex; flex-wrap: wrap; gap: .25rem .9rem; margin-top: .35rem; }
+.canriv-signin .canriv-signin-hotline a:not(.button) { display: inline-flex; align-items: center; gap: .25rem; color: var(--mint) !important; font-size: .66rem; text-decoration: none !important; }
+.canriv-signin .canriv-signin-hotline a .material-symbols-outlined { font-size: .9rem; }
+.canriv-signin .canriv-signin-hotline .hotline-mail { display: flex; align-items: center; }
+.canriv-signin .canriv-signin-hotline .hotline-mail .material-symbols-outlined { color: var(--mint); font-size: .9rem; margin-right: .25rem; }
+.canriv-signin-card { display: flex; flex-direction: column; padding: .2rem .55rem .2rem .2rem; }
+.canriv-signin-card .card-top { display: flex; align-items: center; justify-content: space-between; gap: .5rem; color: #46586b; font: 600 .56rem/1.3 'JetBrains Mono', monospace; letter-spacing: .05em; text-transform: uppercase; }
+.canriv-signin-card .card-top .tls { display: inline-flex; align-items: center; gap: .25rem; margin-left: auto; color: #2c7a6b; }
+.canriv-signin-card .card-top .material-symbols-outlined { font-size: .9rem; }
+.canriv-signin-card h1 { margin: .55rem 0 .4rem; color: #10243a; font: 700 clamp(1.6rem, 3.2vw, 2.4rem)/1 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: .01em; }
+.canriv-signin .card-lede { margin: 0 0 1rem; color: var(--muted); font-size: .74rem; line-height: 1.5; }
+.canriv-panel .woocommerce .canriv-signin form.woocommerce-form-login { margin: 0; padding: 0; border: 0; background: transparent; }
+.canriv-signin .password-input { display: block; width: 100%; }
+.canriv-signin .show-password-input { display: none !important; }
+.canriv-signin-field { margin-bottom: .8rem; }
+.canriv-signin-field .field-head { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; margin-bottom: .3rem; }
+.canriv-signin-field .field-head label { color: #22384c; font: 600 .7rem/1.3 Inter, sans-serif; }
+.canriv-signin-field .field-head .hint { color: #909fad; font-size: .56rem; }
+.canriv-signin-field .field-head a.forgot { font-size: .6rem; font-weight: 600; }
+.canriv-signin-field .field-wrap { position: relative; display: flex; align-items: center; }
+.canriv-panel .woocommerce .canriv-signin .canriv-signin-field input.input-text { display: block; width: 100%; min-height: 2.45rem; margin: 0; padding: .55rem .75rem; background: var(--field); border: 1px solid #dbe3ee; border-radius: .35rem; color: #22384c; font: 400 .78rem/1.3 Inter, sans-serif; }
+.canriv-signin-field input.input-text::placeholder { color: #9aa8b6; }
+.canriv-signin-field input.input-text:focus { outline: none; border-color: #7fb8e6; box-shadow: 0 0 0 3px #7fb8e61f; }
+.canriv-signin .canriv-signin-field .field-help { margin: .3rem 0 0; color: #909fad; font-size: .56rem; line-height: 1.4; }
+.canriv-signin-field .field-wrap input { padding-right: 2.1rem; }
+.canriv-signin-card .canriv-pw-toggle { position: absolute; right: .4rem; display: grid; place-items: center; width: 1.6rem; height: 1.6rem; padding: 0; background: transparent; border: 0; border-radius: .3rem; color: #6b7b8b; cursor: pointer; }
+.canriv-signin-card .canriv-pw-toggle:hover { color: #2c4b63; }
+.canriv-signin-card .canriv-pw-toggle .material-symbols-outlined { font-size: 1.05rem; }
+.canriv-signin .canriv-signin-remember { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .35rem .75rem; margin: .1rem 0 .8rem; }
+.canriv-signin .canriv-signin-remember label { display: inline-flex; align-items: center; gap: .4rem; color: #425768; font-size: .66rem; cursor: pointer; }
+.canriv-signin .canriv-signin-remember input[type="checkbox"] { width: .95rem; height: .95rem; margin: 0; accent-color: var(--teal); }
+.canriv-signin .canriv-signin-remember .geo { display: inline-flex; align-items: center; gap: .25rem; color: var(--teal); font-size: .58rem; }
+.canriv-signin .canriv-signin-remember .geo .material-symbols-outlined { font-size: .85rem; }
+.canriv-panel .woocommerce .canriv-signin .canriv-signin-card button.woocommerce-form-login__submit { display: flex; float: none; align-items: center; justify-content: center; gap: .4rem; width: 100%; margin: 0; padding: .78rem .8rem; background: var(--teal); border: 0; border-radius: .35rem; color: #fff; font: 600 .7rem/1 Inter, sans-serif; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; transition: background .15s ease; }
+.canriv-panel .woocommerce .canriv-signin .canriv-signin-card button.woocommerce-form-login__submit:hover { background: #0c6657; }
+.canriv-signin-card button.woocommerce-form-login__submit .submit-arrow { font-size: .95rem; }
+.canriv-signin .canriv-signin-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .4rem .75rem; margin-top: .95rem; padding-top: .75rem; border-top: 1px solid var(--line); color: #7b8a98; font-size: .64rem; }
+.canriv-signin .canriv-signin-foot a:not(.button) { display: inline-flex; align-items: center; gap: .2rem; color: var(--teal); font-weight: 600; text-decoration: none; }
+.canriv-signin .canriv-signin-foot a .material-symbols-outlined { font-size: .8rem; }
+.canriv-signin-features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .65rem; margin-top: .65rem; }
+.canriv-signin-features > div { display: flex; gap: .5rem; padding: .7rem .7rem; background: #f2f6fb; border: 1px solid #e2e9f1; border-radius: .5rem; }
+.canriv-signin-features .ico { flex: none; display: grid; place-items: center; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: #dbeaf7; color: #1f6fb2; }
+.canriv-signin-features .ico .material-symbols-outlined { font-size: .95rem; }
+.canriv-signin-features strong { display: block; color: #22384c; font: 700 .56rem/1.35 'Barlow Condensed', sans-serif; letter-spacing: .05em; text-transform: uppercase; }
+.canriv-signin .canriv-signin-features p { margin: .15rem 0 0; color: #72818f; font-size: .56rem; line-height: 1.4; }
+.canriv-signin-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .4rem 1rem; margin-top: .55rem; padding: .6rem .3rem .15rem; border-top: 1px solid #dbe3ee; color: #8a99a8; font: 500 .52rem/1.4 'JetBrains Mono', monospace; }
+.canriv-signin-footer .items { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem 1rem; }
+.canriv-signin-footer .items span { display: inline-flex; align-items: center; gap: .25rem; }
+.canriv-signin-footer .material-symbols-outlined { font-size: .8rem; color: #9aa8b6; }
+.canriv-panel .woocommerce .canriv-signin a:not(.button) { color: var(--teal); text-decoration: none; }
+.canriv-signin .woocommerce-notices-wrapper { margin: 0 0 .6rem; }
+@media (max-width: 760px) { .canriv-signin-main { grid-template-columns: minmax(0, 1fr); } .canriv-signin-features { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 460px) { .canriv-signin { padding: .45rem; } .canriv-signin-stats { grid-template-columns: minmax(0, 1fr); } }
 .canriv-panel .woocommerce input:not([type=radio]):not([type=checkbox]), .canriv-panel .woocommerce textarea { border: 1px solid #92a3b3; border-radius: .35rem; padding: .55rem; }
 .canriv-panel .woocommerce button.button.alt, .canriv-panel .woocommerce a.button.alt { background: #006a61; color: white; }
 .canriv-panel .woocommerce a:not(.button) { color: #006a61; text-decoration: underline; }
@@ -962,7 +1033,10 @@ body .canriv-photo-credit a { text-decoration:underline; }
 .canriv-analytics-summary strong { display:block; color:#00685f; font:700 2rem/1.1 'Barlow Condensed',sans-serif; }
 
 .canriv-directory { display:grid; grid-template-columns:16rem minmax(0,1fr); min-height:70vh; }
-.canriv-directory-sidebar { padding-inline:0; }
+.canriv-directory-sidebar { position:sticky; top:32px; align-self:start; height:calc(100vh - 32px); padding-inline:0; border-right:1px solid #d7e3f5; }
+.canriv-directory-sidebar > div:last-child { margin-top:.25rem; padding-top:1rem; border-top:1px solid #d7e3f5; }
+.canriv-directory-sidebar [data-path="public-catalog"] { min-height:44px; color:#00685f; background:#e3f4f1; font-weight:600; }
+.canriv-directory-sidebar [data-path="public-catalog"]:hover { color:#004f49; background:#d2eee9; }
 .canriv-directory main { padding-bottom:1rem; }
 .canriv-directory :is(h1,h2,h3,p,dl) { margin:0; }
 .canriv-directory a { text-decoration:none; }
@@ -1019,7 +1093,8 @@ body .canriv-photo-credit a { text-decoration:underline; }
 #view-orders-table table tbody td:nth-child(6) .canriv-directory-badge { padding:.35rem .45rem; white-space:nowrap; }
 #view-orders-table table tbody td:nth-child(7) { vertical-align:middle; }
 /* Statuses */
-.canriv-directory .canriv-directory-badge[data-status] { padding:.5rem .9rem; border-radius:999px; font:600 .7rem/1.2 'JetBrains Mono',monospace; letter-spacing:.05em; text-transform:uppercase; border:1px solid transparent; }
+.canriv-directory .canriv-directory-badge[data-status] { display:inline-flex; align-items:center; gap:.35rem; padding:.5rem .9rem; border-radius:999px; font:600 .7rem/1.2 'JetBrains Mono',monospace; letter-spacing:.05em; text-transform:uppercase; border:1px solid transparent; }
+.canriv-directory .canriv-directory-badge .canriv-status-icon { font-size:1.05rem; line-height:1; text-transform:none; letter-spacing:normal; }
 .canriv-directory .canriv-directory-badge[data-status='Processing'] { background:#e0f2f1; color:#00685f; }
 .canriv-directory .canriv-directory-badge[data-status='On-Hold'] { background:#f5f4e2; color:#7a5c00; border-color:#dfe2a3; }
 .canriv-directory .canriv-directory-badge[data-status='Pending'] { background:#fef3c7; color:#92400e; }
@@ -1030,12 +1105,15 @@ body .canriv-photo-credit a { text-decoration:underline; }
 .canriv-directory .canriv-directory-badge[data-status='Total Amount'] { background:#e0e7f1; color:#263f61; }
 .canriv-directory-details > div { display:flex; justify-content:space-between; gap:.5rem; margin-top:.4rem; }
 .canriv-directory-details dd { margin:0; overflow-wrap:anywhere; text-align:right; }
-@media (max-width:800px) { .canriv-directory { grid-template-columns:minmax(0,1fr); } }
+@media (max-width:800px) { .canriv-directory { grid-template-columns:minmax(0,1fr); } .canriv-directory-sidebar { position:static; height:auto; } }
 
 .canriv-requests-view #view-orders-table,.canriv-requests-view [aria-label="Filter orders"],.canriv-requests-view .canriv-orders-filter { display:none; }
 .canriv-requests-view #table-container-wrap { grid-column:span 8; }
 .canriv-order-request { white-space:pre-line; }
 .canriv-order-line { display:flex; justify-content:space-between; gap:.5rem; padding:.55rem; margin:.3rem 0; }
+.canriv-directory .canriv-order-item + .canriv-order-item { margin-top:.35rem; padding-top:.35rem; border-top:1px solid #e8edf5; }
+.canriv-directory .canriv-inspector-body { gap:1.5rem; line-height:1.6; }
+.canriv-directory .canriv-inspector-body section { display:flex; flex-direction:column; gap:.35rem; }
 .canriv-order-note { border-left:2px solid #6bd8cb; padding-left:.65rem; margin-top:.55rem !important; }
 .canriv-orders #inspector-panel { align-self:start; }
 .canriv-orders #inspector-panel header .canriv-directory-icon { color:#6bd8cb; }
@@ -1297,3 +1375,26 @@ body.canriv-view-order-page .woocommerce-MyAccount-content address { border:0; c
 .canriv-request-action.is-accept:focus-visible { background:#08796e; color:#fff!important; }
 .canriv-request-action.is-decline { background:#f2f6fc; color:#3b536b!important; font-size:.95rem; }
 .canriv-request-open { min-height:3.15rem; font-size:.95rem; }
+
+/* Keep order actions consistent and allow fulfillment labels to fit. */
+.canriv-directory .canriv-order-actions { display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-end; gap:.45rem; min-width:0; }
+.canriv-directory .canriv-order-actions form { display:flex; flex:0 1 auto; min-width:0; }
+.canriv-directory .canriv-order-actions .canriv-directory-control,
+.canriv-directory .canriv-order-complete-button { display:inline-flex; align-items:center; justify-content:center; gap:.35rem; width:auto; min-height:44px; padding:.6rem .75rem; border:1px solid transparent; border-radius:.55rem; font:600 .78rem/1.2 Inter,Arial,sans-serif; white-space:nowrap; box-shadow:0 1px 2px rgba(11,28,48,.08); transition:background-color .15s,border-color .15s,box-shadow .15s,transform .15s; }
+.canriv-directory .canriv-order-actions a.canriv-directory-control { flex:0 0 44px; width:44px; height:44px; padding:0; border-color:#d5e2f3; background:#fff; color:#00685f; }
+.canriv-directory .canriv-order-actions .is-accept { min-width:5.25rem; border-color:#00685f; background:#00685f; color:#fff; }
+.canriv-directory .canriv-order-actions .is-decline { min-width:5.25rem; border-color:#efd1d3; background:#fff5f5; color:#a52d3a; }
+.canriv-directory .canriv-order-complete-button,
+.canriv-directory .canriv-order-actions .canriv-order-complete-button,
+.canriv-directory .bg-primary.canriv-order-complete-button.text-on-primary { min-width:9.5rem; border-color:#a8d5cd; background:#e7f5f2; color:#075a52!important; }
+.canriv-directory .canriv-order-complete-button .canriv-directory-icon { color:#075a52!important; }
+.canriv-directory .canriv-order-actions .canriv-directory-control:hover,
+.canriv-directory .canriv-order-complete-button:hover { transform:translateY(-1px); box-shadow:0 3px 8px rgba(11,28,48,.14); }
+.canriv-directory .canriv-order-actions .is-accept:hover { background:#00554e; color:#fff; }
+.canriv-directory .canriv-order-actions .is-decline:hover { background:#ffe7e8; color:#8f2330; }
+.canriv-directory .canriv-order-complete-button:hover,
+.canriv-directory .canriv-order-actions .canriv-order-complete-button:hover,
+.canriv-directory .bg-primary.canriv-order-complete-button.text-on-primary:hover { background:#d2eee8; color:#064b45!important; }
+.canriv-directory .canriv-order-complete-button:hover .canriv-directory-icon { color:#064b45!important; }
+.canriv-directory .canriv-order-actions :is(a,button):focus-visible,
+.canriv-directory .canriv-order-complete-button:focus-visible { outline:3px solid #54b9ad; outline-offset:2px; }

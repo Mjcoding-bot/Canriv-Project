@@ -104,7 +104,7 @@ $icon = static fn($name) => '<span class="material-symbols-outlined canriv-custo
             <article class="canriv-customer-order">
                 <div>
                     <h3>Order #<?= esc_html($order->get_order_number()) ?></h3>
-                    <p><?= esc_html(wc_format_datetime($order->get_date_created())) ?> · <span class="canriv-customer-status"><?= esc_html($order->get_meta('canriv_admin_decision') === 'accepted' || $order->has_status('processing') ? 'Accepted' : wc_get_order_status_name($order->get_status())) ?></span></p>
+                    <p><?= esc_html(wc_format_datetime($order->get_date_created())) ?> · <span class="canriv-customer-status"><?= esc_html(canriv_order_decision_label($order)) ?></span></p>
                     <ul><?php foreach ($order->get_items() as $item) : ?><li><?= esc_html($item->get_quantity() . ' × ' . $item->get_name()) ?></li><?php endforeach; ?></ul>
                 </div>
                 <div class="canriv-customer-order-total"><small>Total amount</small><strong><?= wp_kses_post($order->get_formatted_order_total()) ?></strong>

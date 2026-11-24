@@ -1,6 +1,25 @@
 <?php
 defined('ABSPATH') || exit;
 
+function canriv_order_decision_label($order) {
+    if (!$order) {
+        return '';
+    }
+    if (in_array($order->get_status(), ['pending', 'on-hold', 'processing'], true)) {
+        return $order->get_meta('canriv_admin_decision') === 'accepted'
+            ? 'Accepted'
+            : 'Pending';
+    }
+    return wc_get_order_status_name($order->get_status());
+}
+
+add_filter('woocommerce_order_details_status', function ($text, $order) {
+    $label = canriv_order_decision_label($order);
+    return preg_replace_callback('/(<mark class="order-status">).*?(<\/mark>)/', static function ($match) use ($label) {
+        return $match[1] . esc_html($label) . $match[2];
+    }, $text, 1);
+}, 10, 2);
+
 function canriv_order_filters() {
     $statuses = wc_get_order_statuses();
     $params = [];
@@ -37,7 +56,7 @@ add_action('admin_post_canriv_export_orders', function () {
         $orders = wc_get_orders($args + ['limit' => 100, 'page' => $page]);
         foreach ($orders as $order) {
             $row = [$order->get_order_number(), $order->get_date_created()?->date(DATE_ATOM), $order->get_formatted_billing_full_name(),
-                wc_get_order_status_name($order->get_status()), $order->get_total(), $order->get_currency()];
+                canriv_order_decision_label($order), $order->get_total(), $order->get_currency()];
             fputcsv($out, array_map(static fn($value) => preg_match('/^[\x00-\x20]*[=+@-]|^[\t\r\n]/', (string) $value) ? "'" . $value : $value, $row), ',', '"', '');
         }
         if (count($orders) < 100) {
@@ -76,17 +95,27 @@ add_action('admin_post_canriv_update_order', function () {
     check_admin_referer('canriv_update_order_' . $id);
     $order = wc_get_order($id);
     $decision = isset($_POST['decision']) && is_string($_POST['decision']) ? sanitize_key(wp_unslash($_POST['decision'])) : '';
-    if (!$order || !in_array($order->get_status(), ['pending', 'on-hold', 'processing'], true) || !in_array($decision, ['accept', 'decline'], true)) {
+    if (!$order || !in_array($decision, ['accept', 'decline', 'complete'], true)) {
         wp_die('This order can no longer be updated.', '', ['response' => 400]);
     }
-    if ($decision === 'accept') {
-        if ($order->get_status() !== 'processing') $order->update_status('processing', 'Order accepted by an administrator.');
-        $order->update_meta_data('canriv_admin_decision', 'accepted');
-        $order->save();
+    if ($decision === 'complete') {
+        if (!$order->has_status('processing') || $order->get_meta('canriv_admin_decision') !== 'accepted') {
+            wp_die('Accept the order before marking it complete.', '', ['response' => 400]);
+        }
+        $order->update_status('completed', 'Order marked complete by an administrator.');
     } else {
-        $order->update_status('cancelled', $order->is_paid()
-            ? 'Order declined by an administrator. Payment was captured; issue a refund manually.'
-            : 'Order declined by an administrator.');
+        if (!in_array($order->get_status(), ['pending', 'on-hold', 'processing'], true) || $order->get_meta('canriv_admin_decision') === 'accepted') {
+            wp_die('This order can no longer be updated.', '', ['response' => 400]);
+        }
+        if ($decision === 'accept') {
+            if ($order->get_status() !== 'processing') $order->update_status('processing', 'Order accepted by an administrator.');
+            $order->update_meta_data('canriv_admin_decision', 'accepted');
+            $order->save();
+        } else {
+            $order->update_status('cancelled', $order->is_paid()
+                ? 'Order declined by an administrator. Payment was captured; issue a refund manually.'
+                : 'Order declined by an administrator.');
+        }
     }
     wp_safe_redirect(add_query_arg(['order_view' => 'orders', 'inspect_order' => $id], canriv_page_url('order-management')) . '#inspector-panel');
     exit;

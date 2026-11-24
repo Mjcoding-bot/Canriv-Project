@@ -1,4 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const pwToggle = document.querySelector('[data-canriv-pw-toggle]');
+    if (pwToggle) {
+        const input = pwToggle.closest('.field-wrap')?.querySelector('input[type="password"], input[type="text"]');
+        const glyph = pwToggle.querySelector('.material-symbols-outlined');
+        pwToggle.addEventListener('click', () => {
+            if (!input) return;
+            const reveal = input.type === 'password';
+            input.type = reveal ? 'text' : 'password';
+            pwToggle.setAttribute('aria-label', reveal ? 'Hide password' : 'Show password');
+            if (glyph) glyph.textContent = reveal ? 'visibility' : 'visibility_off';
+        });
+    }
+
     const mobileInputs = document.querySelectorAll(
         '#contactNumber, .canriv-customer-portal input[name="phone"], .canriv-form input[name="phone"]'
     );
