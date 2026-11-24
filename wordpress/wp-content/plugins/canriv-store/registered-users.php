@@ -16,10 +16,10 @@ function canriv_directory_query_args() {
         $value = $_GET[$key] ?? '';
         $params[$key] = is_string($value) ? sanitize_text_field(wp_unslash($value)) : '';
     }
-    if (!isset(wp_roles()->roles[$params['account_role']])) {
+    if (!isset(wp_roles()->roles[$params['account_role']]) || $params['account_role'] === 'subscriber') {
         $params['account_role'] = '';
     }
-    $args = ['orderby' => ['registered' => 'DESC', 'ID' => 'DESC']];
+    $args = ['orderby' => ['registered' => 'DESC', 'ID' => 'DESC'], 'role__not_in' => ['subscriber']];
     if ($params['account_role'] !== '') {
         $args['role'] = $params['account_role'];
     }
@@ -78,10 +78,11 @@ function canriv_registered_directory() {
     $selected = $selected_id ? get_user_by('id', $selected_id) : ($users[0] ?? false);
     $counts = count_users();
     $roles = $counts['avail_roles'];
+    $counts['total_users'] -= (int) ($roles['subscriber'] ?? 0);
     $staff = count(get_users(['role__in' => ['administrator', 'shop_manager'], 'fields' => 'ID']));
-    $known_roles = ['customer', 'subscriber', 'administrator', 'shop_manager'];
+    $known_roles = ['customer', 'administrator', 'shop_manager'];
     $other = $counts['total_users'] - count(get_users(['role__in' => $known_roles, 'fields' => 'ID']));
-    $month = (new WP_User_Query(['number' => 1, 'fields' => 'ID', 'date_query' => [
+    $month = (new WP_User_Query(['number' => 1, 'fields' => 'ID', 'role__not_in' => ['subscriber'], 'date_query' => [
         ['after' => current_time('Y-m-01 00:00:00', true), 'inclusive' => true],
     ]]))->get_total();
     $icon = static fn($name) => '<span class="material-symbols-outlined canriv-directory-icon" aria-hidden="true">' . esc_html($name) . '</span>';
@@ -102,7 +103,6 @@ function canriv_registered_directory() {
         '%%newuser%%' => esc_url(admin_url('user-new.php')),
         '%%metric1%%' => number_format_i18n($counts['total_users']),
         '%%metric2%%' => number_format_i18n($roles['customer'] ?? 0),
-        '%%metric3%%' => number_format_i18n($roles['subscriber'] ?? 0),
         '%%metric4%%' => number_format_i18n($staff),
         '%%metric5%%' => number_format_i18n($other),
         '%%month%%' => '+' . number_format_i18n($month),

@@ -86,12 +86,7 @@ if ($section === 'company-brands') :
         </div>
     </section>
 <?php elseif ($section === 'aircon-shop') :
-    $aircons = [
-        ['MSZ-GC35NA', 'Wall-mounted inverter', 'canriv-msz-gc35na.webp', 1440, 1080, 'A flat-panel room air conditioner from the Mitsubishi Electric MSZ-GC Series. Canriv’s showroom post highlights efficient inverter operation, quiet running, an easy-clean indoor unit, and compatibility with multi-systems. Ask Canriv to confirm compatible equipment for your installation.'],
-        ['MSZ-GC50NA', 'Wall-mounted inverter', 'canriv-msz-gc50na.webp', 1440, 1080, 'A second MSZ-GC Series wall-mounted unit shown in Canriv’s showroom. Compare it with the MSZ-GC35NA when discussing your room size, installation location, and compatible outdoor unit.'],
-        ['PLY-SP36EA', 'Ceiling cassette', 'canriv-ply-sp36ea.webp', 640, 854, 'This cassette fits into the ceiling, with a square grille and outlets around its edges. Ask Canriv to check the available ceiling space, drainage route, and equipment requirements before installation.'],
-        ['PSY-SP36KA', 'Floor-standing unit', 'canriv-psy-sp36ka.webp', 1080, 1440, 'This upright indoor unit stands at floor level. The showroom photo shows its front air outlet and controls. Ask Canriv what floor space and clearances are needed for the unit.'],
-    ];
+    $aircons = [];
     $quote_url = canriv_page_url('contact') . '#canriv-free-quote';
     ?>
         <?php
@@ -178,27 +173,7 @@ elseif ($section === 'company-team') : ?>
     </section>
 <?php elseif (in_array($section, ['vertical-transport', 'vertical-transport-summary'], true)) :
     $full = $section === 'vertical-transport';
-    $lineup = [
-        'Elevators' => [
-            'Passenger elevators' => 'Mitsubishi Electric offers a range of car capacities and travel speeds for everyday passenger service. The elevators are designed for smooth rides and lower power use. Choose a capacity and speed based on how many people use the building and how far they travel between floors.',
-            'High-speed elevators' => 'Designed for tall office buildings, hotels, and shopping centers, these elevators carry passengers across longer vertical distances with a focus on safety and ride comfort. Mitsubishi Electric can tailor the specifications and cabin design to the needs of the building.',
-            'Hospital elevators' => 'Hospital bed elevators carry patients between floors while they remain in their beds. They can also move medical equipment and accommodate staff accompanying patients. When planning a hospital installation, consider the space needed for beds, equipment, and attendants to enter and exit together.',
-            'Home elevators' => 'A home elevator gives family members another way to move between floors, making bedrooms, living areas, or other levels easier to reach. It can help people who find stairs difficult move around a multistory home more independently.',
-            'Observation elevators' => 'Larger windows let passengers see the space around them while the car travels between floors. Mitsubishi Electric expanded the window area across its observation elevator lineup, giving designers more scope to highlight views from an atrium or other open interior.',
-            'Freight elevators' => 'Built for frequent movement of materials and cargo, these large-capacity elevators use permanent-magnet motors. This drive is designed for quieter operation and lower electricity use compared with conventional worm-gear traction machines.',
-        ],
-        'Escalators and moving walks' => [
-            'Straight-line escalators' => 'Straight-line escalators provide a continuous route for passengers between levels. Mitsubishi Electric offers conventional and customized designs. When choosing a layout, consider where passengers enter and exit and how those points connect to the rest of the building.',
-            'Spiral escalators' => 'A curved travel path gives passengers changing views of the surrounding interior as they move between floors. Architects can use the spiral shape as part of an open atrium or design the surrounding circulation around it.',
-            'Moving walks' => 'Moving walks help pedestrians cover longer routes within a building. Mitsubishi Electric lists clear step widths of 1,004 mm, 1,204 mm, and an extra-wide 1,404 mm, giving designers options when planning the route and its expected foot traffic.',
-        ],
-        'Controls and upgrades' => [
-            'MELSAFETY-PA access control' => 'MELSAFETY-PA combines elevator car and door access control in one system. It can manage access to elevators and rooms, helping site managers control entry to restricted areas in offices, residences, or factories.',
-            'MelEye monitoring and control' => 'MelEye gives building operators a system for monitoring and controlling elevators and escalators. It supports building traffic supervision by bringing oversight of both types of equipment into a single system.',
-            'Dumbwaiters' => 'Dumbwaiters are small service lifts that move goods such as supplies, dishes, or documents between floors. Mitsubishi Electric’s design focuses on ease of operation and safety, with an automatic energy-saving mode that reduces power consumption.',
-            'Modernization' => 'Mitsubishi Electric modernization updates existing elevators and escalators with newer technology. The brochure identifies improved reliability, smoother rides, shorter waits, lower energy use, and a refreshed appearance as potential benefits. The scope depends on the equipment already in the building.',
-        ],
-    ];
+    $lineup = canriv_equipment_catalog();
     $details = canriv_page_url('products-services') . '#mitsubishi-vertical-transport';
     ?>
     <section class="canriv-company-info canriv-company-inner canriv-vertical" <?= $full ? 'id="mitsubishi-vertical-transport"' : '' ?>>
@@ -206,64 +181,32 @@ elseif ($section === 'company-team') : ?>
         <p>Explore equipment for homes, hospitals, commercial buildings, and freight operations. Contact Canriv for project specifications, availability, and a quote.</p>
         <?php if ($full) : ?>
             <?php
-            $photos = [
-                'Passenger elevators' => ['mitsubishi-passenger.webp', 1200, 686, 'Mitsubishi Electric NEXIEZ-MRL elevator cars in a glass shaft'],
-                'High-speed elevators' => ['mitsubishi-high-speed.webp', 790, 527, 'Bank of NexWay high-speed elevator doors in a lobby'],
-                'Hospital elevators' => ['mitsubishi-hospital.webp', 704, 264, 'Hospital bed inside a Mitsubishi Electric NEXIEZ-MR elevator'],
-                'Home elevators' => ['mitsubishi-home.webp', 1200, 686, 'Mitsubishi Electric home elevator opening onto a living room'],
-                'Observation elevators' => ['mitsubishi-elevators.jpg', 640, 400, 'Glass elevator cars in a building atrium'],
-                'Freight elevators' => ['mitsubishi-freight.webp', 1008, 378, 'Interior of a Mitsubishi Electric GFC-L3 freight elevator'],
-                'Straight-line escalators' => ['mitsubishi-straight-escalator.webp', 1200, 450, 'Passengers riding a straight Mitsubishi Electric u Series escalator'],
-                'Spiral escalators' => ['mitsubishi-spiral.png', 1200, 800, 'Curved escalator with glass railings'],
-                'Moving walks' => ['mitsubishi-moving-walks.jpg', 640, 400, 'Two inclined moving walks side by side'],
-                'MELSAFETY-PA access control' => ['mitsubishi-access-control.webp', 512, 192, 'Passenger presenting an access card to the MELSAFETY-PA elevator reader'],
-                'MelEye monitoring and control' => ['mitsubishi-meleye.webp', 980, 300, 'Operator viewing the MelEye elevator and escalator monitoring screens'],
-                'Dumbwaiters' => ['mitsubishi-dumbwaiter.webp', 624, 234, 'Wall-mounted H-Series dumbwaiter with an open service hatch'],
-                'Modernization' => ['mitsubishi-modernization.jpg', 640, 400, 'A family approaching an elevator with stainless-steel doors'],
-            ];
-            $applications = [
-                'Passenger elevators' => 'General passenger transport',
-                'High-speed elevators' => 'Taller commercial buildings',
-                'Hospital elevators' => 'Patient beds and medical equipment',
-                'Home elevators' => 'Multistory homes',
-                'Observation elevators' => 'Passenger travel with a panoramic view',
-                'Freight elevators' => 'Materials and cargo',
-                'Straight-line escalators' => 'Passenger traffic between levels',
-                'Spiral escalators' => 'Curved passenger routes',
-                'Moving walks' => 'Pedestrian traffic',
-                'MELSAFETY-PA access control' => 'Elevator car and door access',
-                'MelEye monitoring and control' => 'Elevator and escalator supervision',
-                'Dumbwaiters' => 'Small goods and service items',
-                'Modernization' => 'Existing elevators and escalators',
-            ];
             $quote = canriv_page_url('contact') . '#canriv-free-quote';
             ?>
             <?php foreach ($lineup as $group => $products) : ?>
                 <?php $icon = ['Elevators' => 'elevator', 'Escalators and moving walks' => 'escalator', 'Controls and upgrades' => 'settings'][ $group ]; ?>
                 <h3><?= esc_html($group) ?></h3>
                 <div class="canriv-equipment-cards">
-                    <?php foreach ($products as $name => $description) : ?>
+                    <?php foreach ($products as $name => $item) : $detail_url = canriv_equipment_url($item['slug']); ?>
                         <article>
                             <header class="canriv-equipment-card-header">
                             <p class="canriv-equipment-category"><?= esc_html($group) ?></p>
-                            <h4><?= esc_html($name) ?></h4>
+                            <h4><a href="<?= esc_url($detail_url) ?>"><?= esc_html($name) ?></a></h4>
                             <span class="material-symbols-outlined canriv-equipment-icon" aria-hidden="true"><?= esc_html($icon) ?></span>
                             </header>
-                            <?php [$file, $width, $height, $alt] = $photos[$name]; ?>
-                            <img src="<?= esc_url(plugins_url('assets/' . $file, dirname(__DIR__) . '/canriv-store.php')) ?>" width="<?= (int) $width ?>" height="<?= (int) $height ?>" alt="<?= esc_attr($alt) ?>" loading="lazy" decoding="async">
-                            <p><?= esc_html($description) ?></p>
+                            <a class="canriv-equipment-card-image" href="<?= esc_url($detail_url) ?>"><img src="<?= esc_url(plugins_url('assets/' . $item['file'], dirname(__DIR__) . '/canriv-store.php')) ?>" alt="<?= esc_attr($item['alt']) ?>" loading="lazy" decoding="async"></a>
+                            <p><?= esc_html($item['description']) ?></p>
                             <dl class="canriv-equipment-details">
                                 <div><dt>Manufacturer</dt><dd>Mitsubishi Electric</dd></div>
-                                <div><dt>Application</dt><dd><?= esc_html($applications[$name]) ?></dd></div>
+                                <div><dt>Application</dt><dd><?= esc_html($item['application']) ?></dd></div>
                             </dl>
                             <div class="canriv-equipment-action">
-                                <a class="canriv-button" href="<?= esc_url($quote) ?>" aria-label="<?= esc_attr('Request a quote for ' . $name) ?>">Request a quote <span aria-hidden="true">→</span></a>
+                                <a class="canriv-button" href="<?= esc_url($detail_url) ?>" aria-label="<?= esc_attr('View details for ' . $name) ?>">View details <span aria-hidden="true">→</span></a>
                             </div>
                         </article>
                     <?php endforeach; ?>
                 </div>
             <?php endforeach; ?>
-            <p class="canriv-photo-credit">Image sources: <a href="https://www.iee.com.ph/products-solutions/elevators-escalators/index.html">IEE product catalog</a>, <a href="https://www.iee.com.ph/products-solutions/brochures/escalators/brochure_u_es.pdf">u Series escalator brochure</a>, <a href="https://www.mitsubishielevator.co.th/2016/upload/cms_file/1529381347_425.pdf">MELSAFETY-PA brochure</a>, <a href="https://www.mitsubishielevator.com/products/monitoring/">MelEye product page</a>, <a href="https://gb.mitsubishielectric.com/en/products-solutions/building/">Mitsubishi Electric</a>, and <a href="https://www.mebs.co.jp/useful/technology/1199886_1625.html">Mitsubishi Electric Building Solutions</a>.</p>
         <?php else : ?>
             <a class="canriv-button" href="<?= esc_url($details) ?>">Explore the Mitsubishi Electric lineup</a>
         <?php endif; ?>

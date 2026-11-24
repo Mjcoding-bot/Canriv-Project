@@ -1,0 +1,514 @@
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    @layer base {
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        overscroll-behavior: none;
+      }
+    }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#00685f",
+            "primary-container": "#008378",
+            "primary-fixed": "#89f5e7",
+            "primary-fixed-dim": "#6bd8cb",
+            "on-primary": "#ffffff",
+            "on-primary-container": "#f4fffc",
+            "secondary": "#565e74",
+            "secondary-container": "#dae2fd",
+            "tertiary": "#006194",
+            "tertiary-container": "#007bb9",
+            "on-tertiary": "#ffffff",
+            "surface": "#f8f9ff",
+            "surface-dim": "#cbdbf5",
+            "surface-bright": "#f8f9ff",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#eff4ff",
+            "surface-container": "#e5eeff",
+            "surface-container-high": "#dce9ff",
+            "surface-container-highest": "#d3e4fe",
+            "on-surface": "#0b1c30",
+            "on-surface-variant": "#3d4947",
+            "outline": "#6d7a77",
+            "outline-variant": "#bcc9c6",
+            "inverse-surface": "#213145",
+            "inverse-on-surface": "#eaf1ff"
+          },
+          fontFamily: {
+            "display": ["Barlow Condensed", "sans-serif"],
+            "headline-lg": ["Barlow Condensed", "sans-serif"],
+            "headline-md": ["Barlow Condensed", "sans-serif"],
+            "headline-sm": ["Barlow Condensed", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "label-code": ["JetBrains Mono", "monospace"],
+            "label-price": ["Barlow Condensed", "sans-serif"],
+            "label-sm": ["Inter", "sans-serif"],
+            "title-md": ["Inter", "sans-serif"]
+          },
+          spacing: {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2.5rem",
+            "gutter": "1.5rem"
+          }
+        }
+      }
+    };
+  </script>
+<div id="canriv-completed-projects" class="bg-surface font-body-md text-on-surface antialiased min-h-screen flex flex-col">
+<!-- TOP HEADER & NAVBAR -->
+
+<!-- MAIN EDITORIAL CONTENT -->
+<main class="w-full flex-1">
+<!-- SUB-NAV / BREADCRUMB BAR -->
+<div class="w-full bg-white border-b border-surface-container py-2.5 px-gutter">
+<div class="max-w-[1440px] mx-auto flex flex-wrap items-center justify-between gap-3 text-body-sm">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<a class="hover:text-primary transition-colors flex items-center gap-1" data-path="home" href="__CANRIV_URL_home__">
+<span class="material-symbols-outlined text-[15px]">home</span> Portal
+          </a>
+<span class="text-outline-variant">/</span>
+<span class="text-primary font-semibold">Completed Projects &amp; Field Archive</span>
+</div>
+<div class="flex items-center gap-4 text-label-code text-[11px] text-on-surface-variant">
+<span class="inline-flex items-center gap-1.5 font-medium"><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> PCAB LICENSE: 48921-A</span>
+<span class="hidden sm:inline text-outline-variant">|</span>
+<span class="hidden sm:inline">DOLE DO-174 COMPLIANT</span>
+<span class="hidden sm:inline text-outline-variant">|</span>
+<span class="hidden sm:inline">ASHRAE 15 &amp; 34 SPECS</span>
+</div>
+</div>
+</div>
+<!-- STREAMLINED HERO: Editorial Layout with Inline Micro-Metrics (No Bulky Cards) -->
+<section class="w-full bg-surface-container-low/40 border-b border-surface-container py-12 px-gutter">
+<div class="max-w-[1440px] mx-auto">
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+<div class="max-w-3xl">
+<div class="flex items-center gap-2 text-primary font-label-code text-xs font-bold uppercase tracking-wider mb-2">
+<span class="material-symbols-outlined text-[16px]">verified</span> Verified Mechanical &amp; Elevator Commissioning
+            </div>
+<h1 class="font-headline-lg text-[2.75rem] md:text-[3.5rem] text-on-surface uppercase font-bold leading-[1.08] tracking-tight">
+              Field Execution &amp; Completed Works
+            </h1>
+<p class="font-body-md text-on-surface-variant text-[16px] leading-relaxed mt-3 max-w-2xl">
+              Turnkey HVAC VRF installations, multi-split preventive maintenance, and elevator servicing across Metro Manila, Central Luzon, and North Luzon. Non-disruptive chemical cleaning engineered for high-density 24/7 corporate spaces.
+            </p>
+</div>
+<!-- Minimalist Inline Metric Bar (Clean rule-divided row instead of floating boxes) -->
+<div class="flex items-stretch border border-surface-container bg-white rounded divide-x divide-surface-container self-start lg:self-end shadow-xs">
+<div class="px-5 py-3">
+<div class="font-headline-md text-2xl font-bold text-primary leading-none">8,500+</div>
+<div class="font-label-code text-[11px] text-on-surface-variant uppercase mt-1">Units Serviced</div>
+</div>
+<div class="px-5 py-3">
+<div class="font-headline-md text-2xl font-bold text-primary leading-none">550 PSI</div>
+<div class="font-label-code text-[11px] text-on-surface-variant uppercase mt-1">Nitrogen Hold</div>
+</div>
+<div class="px-5 py-3">
+<div class="font-headline-md text-2xl font-bold text-primary leading-none">Zero</div>
+<div class="font-label-code text-[11px] text-on-surface-variant uppercase mt-1">Leak Warranty</div>
+</div>
+</div>
+</div>
+<!-- Inline Navigation anchors to skip clutter -->
+<div class="flex items-center gap-6 mt-8 pt-4 border-t border-surface-container text-body-sm font-label-code text-xs">
+<span class="text-on-surface-variant uppercase tracking-wider font-semibold">Jump to Archive:</span>
+<a class="text-primary hover:underline font-bold flex items-center gap-1" href="#case-taskus">
+<span class="material-symbols-outlined text-[14px]">arrow_downward</span> 01. TaskUs BGC VRF
+          </a>
+<a class="text-on-surface hover:text-primary transition-colors flex items-center gap-1" href="#case-cassette">
+<span class="material-symbols-outlined text-[14px]">arrow_downward</span> 02. Ceiling Cassette Protocol
+          </a>
+<a class="text-on-surface hover:text-primary transition-colors flex items-center gap-1" href="#standards-strip">
+<span class="material-symbols-outlined text-[14px]">arrow_downward</span> 03. Engineering Standards
+          </a>
+</div>
+</div>
+</section>
+<!-- PROJECT 01: TASKUS BGC (Editorial Case Study Layout - No repetitive mini-cards) -->
+<section class="w-full py-16 px-gutter bg-white border-b border-surface-container" id="case-taskus">
+<div class="max-w-[1440px] mx-auto">
+<!-- Case Header Strip -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-surface-container">
+<div class="space-y-1.5">
+<div class="flex items-center gap-3 font-label-code text-xs">
+<span class="font-bold text-primary uppercase tracking-wider">PROJECT 01</span>
+<span class="text-outline-variant">/</span>
+<span class="text-on-surface-variant">REF: CRV-BGC-TASKUS-01</span>
+<span class="text-outline-variant">/</span>
+<span class="bg-primary-fixed/30 text-on-surface px-2 py-0.5 rounded font-semibold text-[11px]">Mitsubishi Electric City Multi VRF</span>
+</div>
+<h2 class="font-headline-lg text-3xl md:text-4xl text-on-surface uppercase font-bold tracking-tight">
+              TaskUs at 24/7 McKinley Tower, Bonifacio Global City
+            </h2>
+<p class="font-body-md text-on-surface-variant text-[15px] max-w-4xl">
+<strong class="text-on-surface font-semibold">Scope of Works:</strong> Full Comprehensive Preventive Maintenance (General Deep Cleaning) of Mitsubishi Electric VRF System (Ceiling Cassette Indoor Units &amp; Modular Outdoor Condensers) in active BPO office workstations with zero operational downtime.
+            </p>
+</div>
+<!-- Direct Hotline & Specs CTA Strip -->
+<div class="flex items-center gap-3 flex-shrink-0">
+<a class="px-4 py-2.5 bg-primary text-on-primary font-body-sm font-semibold rounded hover:bg-primary-container transition-colors inline-flex items-center gap-2 shadow-xs" href="tel:09277185914">
+<span class="material-symbols-outlined text-[17px]">call</span> Call Crew (0927-718-5914)
+            </a>
+<a class="px-4 py-2.5 border border-surface-container text-on-surface font-body-sm font-semibold rounded hover:bg-surface-container-low transition-colors inline-flex items-center gap-2" href="mailto:canrivj@gmail.com?subject=TaskUs%20Scope%20Inquiry">
+<span class="material-symbols-outlined text-[17px] text-primary">description</span> Request BOQ / Scope
+            </a>
+</div>
+</div>
+<!-- Asymmetric Editorial Gallery & Technical Annotation Strip (Replaces 4 duplicate box cards) -->
+<div class="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Primary Photographic Ribbon (Columns 1-8) -->
+<div class="lg:col-span-8 space-y-4">
+<!-- Large Showcase Image -->
+<div class="relative w-full h-[440px] bg-surface-container-low rounded overflow-hidden">
+<img alt="Canriv technicians servicing Mitsubishi Electric ceiling cassette units inside TaskUs McKinley Tower BGC" class="w-full h-full object-cover object-center" src="assets/completed-project-stitch-01.png"/>
+<div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-5 text-white">
+<div class="font-label-code text-xs text-primary-fixed uppercase font-semibold">Active Station Protection</div>
+<div class="font-headline-sm text-lg font-bold">Simultaneous Cassette Servicing Across Open-Floor BPO Cubicles</div>
+<p class="text-xs text-white/80 mt-0.5 font-body-sm">Specialized containment tarps and direct siphon funnels isolate water runoff right above desktop monitors and sensitive wiring.</p>
+</div>
+</div>
+<!-- Supporting Photographic Thumbnails Strip -->
+<div class="grid grid-cols-3 gap-3">
+<div class="group relative h-48 bg-surface-container rounded overflow-hidden">
+<img alt="Full view of TaskUs open floor with 360 degree catchment funnels installed" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="assets/completed-project-stitch-02.png"/>
+<span class="absolute bottom-2 left-2 bg-inverse-surface/85 text-inverse-on-surface text-[10px] font-label-code px-2 py-0.5 rounded">Catchment Funnels</span>
+</div>
+<div class="group relative h-48 bg-surface-container rounded overflow-hidden">
+<img alt="Canriv technicians working safely on A-frame ladders inspecting electronics" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="assets/completed-project-stitch-03.png"/>
+<span class="absolute bottom-2 left-2 bg-inverse-surface/85 text-inverse-on-surface text-[10px] font-label-code px-2 py-0.5 rounded">PCB Protection</span>
+</div>
+<div class="group relative h-48 bg-surface-container rounded overflow-hidden">
+<img alt="Overhead ceiling tile access and high-pressure chemical wash preparation" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="assets/completed-project-stitch-04.png"/>
+<span class="absolute bottom-2 left-2 bg-inverse-surface/85 text-inverse-on-surface text-[10px] font-label-code px-2 py-0.5 rounded">Plenum Access</span>
+</div>
+</div>
+</div>
+<!-- Editorial Technical Specifications & Notes Strip (Columns 9-12) - Crisp typography without card borders -->
+<div class="lg:col-span-4 flex flex-col justify-between h-full space-y-6 lg:border-l lg:border-surface-container lg:pl-8">
+<div class="space-y-6">
+<div>
+<h3 class="font-headline-sm text-xl uppercase font-bold text-on-surface pb-2 border-b border-surface-container">
+                  Engineering Scope Summary
+                </h3>
+<dl class="divide-y divide-surface-container/70 text-sm mt-3">
+<div class="py-2.5 flex justify-between gap-4">
+<dt class="text-on-surface-variant font-label-code text-xs uppercase">Client / Facility</dt>
+<dd class="text-right font-medium text-on-surface text-xs">TaskUs Philippines</dd>
+</div>
+<div class="py-2.5 flex justify-between gap-4">
+<dt class="text-on-surface-variant font-label-code text-xs uppercase">Building / Location</dt>
+<dd class="text-right font-medium text-on-surface text-xs">24/7 McKinley Tower, BGC</dd>
+</div>
+<div class="py-2.5 flex justify-between gap-4">
+<dt class="text-on-surface-variant font-label-code text-xs uppercase">Equipment Serviced</dt>
+<dd class="text-right font-medium text-primary text-xs">Mitsubishi Electric City Multi VRF</dd>
+</div>
+<div class="py-2.5 flex justify-between gap-4">
+<dt class="text-on-surface-variant font-label-code text-xs uppercase">Technician Safety</dt>
+<dd class="text-right font-medium text-on-surface text-xs">DOLE DO-174 PPE Standard</dd>
+</div>
+<div class="py-2.5 flex justify-between gap-4">
+<dt class="text-on-surface-variant font-label-code text-xs uppercase">Work Window</dt>
+<dd class="text-right font-medium text-on-surface text-xs">Non-Disruptive Graveyard &amp; Shift</dd>
+</div>
+</dl>
+</div>
+<!-- Technical Narrative points -->
+<div class="space-y-3">
+<div class="text-xs font-label-code text-primary uppercase font-bold tracking-wider">Field Highlights</div>
+<div class="space-y-2 text-xs text-on-surface-variant leading-relaxed">
+<p class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary shrink-0 mt-0.5">check_circle</span>
+<span><strong>100% Zero-Spill Catch-Basins:</strong> Funnel skirts ensure bio-chemical rinse water drains into closed containers without wetting desks or server lines below.</span>
+</p>
+<p class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary shrink-0 mt-0.5">check_circle</span>
+<span><strong>PCB Terminal Shielding:</strong> Electronics boards and diagnostic signal loops isolated from moisture prior to chemical fin wash.</span>
+</p>
+<p class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary shrink-0 mt-0.5">check_circle</span>
+<span><strong>Airflow Metric Verification:</strong> Restored factory CFM ratings across all ceiling cassettes, reducing compressor amp draw by up to 18%.</span>
+</p>
+</div>
+</div>
+</div>
+<!-- Quick Technician Dispatch strip -->
+<div class="pt-4 border-t border-surface-container bg-surface-container-low/60 p-4 rounded text-xs space-y-1">
+<div class="font-label-code font-bold text-on-surface uppercase">On-Site PMS Contact:</div>
+<div class="font-label-code text-on-surface-variant">Hotline: <strong class="text-primary font-bold">0927-718-5914</strong> / (02) 8294-5436</div>
+<div class="text-[11px] text-on-surface-variant">Valenzuela Main Ops &amp; Cabanatuan Regional Hub</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- PROJECT 02: CEILING CASSETTE CLEANING (Horizontal Step-by-Step Chronological Process - No Boxed Cards) -->
+<section class="w-full py-16 px-gutter bg-surface-container-low/30 border-b border-surface-container" id="case-cassette">
+<div class="max-w-[1440px] mx-auto">
+<!-- Case Header Strip -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-surface-container">
+<div class="space-y-1">
+<div class="flex items-center gap-3 font-label-code text-xs">
+<span class="font-bold text-tertiary uppercase tracking-wider">PROJECT 02</span>
+<span class="text-outline-variant">/</span>
+<span class="text-on-surface-variant">STANDARD OPERATING PROCEDURE</span>
+<span class="text-outline-variant">/</span>
+<span class="text-tertiary font-semibold">Done Preventive Maintenance</span>
+</div>
+<h2 class="font-headline-lg text-3xl md:text-4xl text-on-surface uppercase font-bold tracking-tight">
+              Keep Your Home &amp; Offices Clean and Cool! (Ceiling Cassette On-Site Cleaning)
+            </h2>
+<p class="font-body-md text-on-surface-variant text-[15px] max-w-3xl">
+              Rapid non-disruptive general cleaning and chemical wash of commercial 4-way cassettes and multi-split systems. Illustrated 4-stage execution sequence from initial isolation to siphon drain clearance.
+            </p>
+</div>
+<div class="flex items-center gap-3 font-label-code text-xs">
+<span class="text-on-surface-variant">Direct Dispatch:</span>
+<a class="font-bold text-primary hover:underline" href="tel:09277185914">0927-718-5914</a>
+<span class="text-outline-variant">/</span>
+<a class="font-bold text-tertiary hover:underline" href="tel:0284639559">(02) 8463-9559</a>
+</div>
+</div>
+<!-- Horizontal Chronological Timeline Strip (Replaces 4 repetitive boxed cards with sleek numbered narrative columns) -->
+<div class="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+<!-- Stage 01 -->
+<div class="flex flex-col space-y-3 group">
+<div class="relative h-64 overflow-hidden rounded bg-surface-container">
+<img alt="Stage 1: Funnel bag catchment enclosure installed on ceiling cassette unit" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="assets/completed-project-stitch-05.png"/>
+<span class="absolute top-2 left-2 bg-inverse-surface/85 text-inverse-on-surface text-[11px] font-label-code px-2 py-0.5 rounded font-bold">
+                01 / ISOLATION
+              </span>
+</div>
+<div class="pt-1">
+<div class="text-xs font-label-code text-tertiary uppercase font-bold tracking-wider">Step 01</div>
+<h3 class="font-headline-sm text-lg font-bold text-on-surface uppercase mt-0.5">Funnel Bag Enclosure</h3>
+<p class="font-body-sm text-on-surface-variant text-xs mt-1 leading-relaxed">
+                Heavy-duty 360° catch shroud seals overspray. Direct polyethylene tubes funnel rinse runoff safely away from office computers, rugs, and active desks.
+              </p>
+<div class="font-label-code text-[11px] text-tertiary font-medium mt-2 pt-2 border-t border-surface-container">
+                ✓ 100% Floor &amp; Carpet Safeguard
+              </div>
+</div>
+</div>
+<!-- Stage 02 -->
+<div class="flex flex-col space-y-3 group">
+<div class="relative h-64 overflow-hidden rounded bg-surface-container">
+<img alt="Stage 2: Precision disassembly of ceiling cassette faceplate and fan motor" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="assets/completed-project-stitch-06.png"/>
+<span class="absolute top-2 left-2 bg-inverse-surface/85 text-inverse-on-surface text-[11px] font-label-code px-2 py-0.5 rounded font-bold">
+                02 / DISASSEMBLY
+              </span>
+</div>
+<div class="pt-1">
+<div class="text-xs font-label-code text-tertiary uppercase font-bold tracking-wider">Step 02</div>
+<h3 class="font-headline-sm text-lg font-bold text-on-surface uppercase mt-0.5">Precision Demounting</h3>
+<p class="font-body-sm text-on-surface-variant text-xs mt-1 leading-relaxed">
+                Careful demounting of louver faceplates, centrifugal blower wheel, and drain pan. Moisture barriers installed over delicate PCB electronics and sensors.
+              </p>
+<div class="font-label-code text-[11px] text-tertiary font-medium mt-2 pt-2 border-t border-surface-container">
+                ✓ Electronics Barrier Shielded
+              </div>
+</div>
+</div>
+<!-- Stage 03 -->
+<div class="flex flex-col space-y-3 group">
+<div class="relative h-64 overflow-hidden rounded bg-surface-container">
+<img alt="Stage 3: High pressure chemical rotary coil wash on ladder" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="assets/completed-project-stitch-07.png"/>
+<span class="absolute top-2 left-2 bg-inverse-surface/85 text-inverse-on-surface text-[11px] font-label-code px-2 py-0.5 rounded font-bold">
+                03 / CHEMICAL WASH
+              </span>
+</div>
+<div class="pt-1">
+<div class="text-xs font-label-code text-tertiary uppercase font-bold tracking-wider">Step 03</div>
+<h3 class="font-headline-sm text-lg font-bold text-on-surface uppercase mt-0.5">Rotary Fin Pressure Wash</h3>
+<p class="font-body-sm text-on-surface-variant text-xs mt-1 leading-relaxed">
+                Non-acidic bio-chemical spray penetrates micro-fins. Removes grease, bacterial sludge, and dust clumps without degrading the aluminum coil structure.
+              </p>
+<div class="font-label-code text-[11px] text-tertiary font-medium mt-2 pt-2 border-t border-surface-container">
+                ✓ Non-Corrosive Bio Chemistry
+              </div>
+</div>
+</div>
+<!-- Stage 04 -->
+<div class="flex flex-col space-y-3 group">
+<div class="relative h-64 overflow-hidden rounded bg-surface-container">
+<img alt="Stage 4: Antimicrobial siphon drain flush and final testing" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="assets/completed-project-stitch-08.png"/>
+<span class="absolute top-2 left-2 bg-inverse-surface/85 text-inverse-on-surface text-[11px] font-label-code px-2 py-0.5 rounded font-bold">
+                04 / DRAIN FLUSH
+              </span>
+</div>
+<div class="pt-1">
+<div class="text-xs font-label-code text-tertiary uppercase font-bold tracking-wider">Step 04</div>
+<h3 class="font-headline-sm text-lg font-bold text-on-surface uppercase mt-0.5">Antimicrobial Drain Flush</h3>
+<p class="font-body-sm text-on-surface-variant text-xs mt-1 leading-relaxed">
+                Gravity line purge and siphon pressure check. Condensate tray receives algae inhibition tablets to guarantee zero ceiling drip leaks post-cleaning.
+              </p>
+<div class="font-label-code text-[11px] text-tertiary font-medium mt-2 pt-2 border-t border-surface-container">
+                ✓ Zero-Clog Drip Guarantee
+              </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CONSOLIDATED SECTION: TECHNICAL STANDARDS & EXECUTION GOVERNANCE (Merged Table/Strip instead of card boxes) -->
+<section class="w-full py-16 px-gutter bg-white border-b border-surface-container" id="standards-strip">
+<div class="max-w-[1440px] mx-auto">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-surface-container">
+<div>
+<div class="inline-flex items-center gap-1.5 text-primary font-label-code text-xs font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-[16px]">verified_user</span> Engineering Governance &amp; Commissioning Roadmap
+            </div>
+<h2 class="font-headline-lg text-3xl md:text-4xl text-on-surface uppercase font-bold tracking-tight mt-1">
+              Quality Assurance &amp; Handover Protocols
+            </h2>
+</div>
+<div class="text-body-sm font-label-code text-xs text-primary font-semibold flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">gavel</span> Zero-Defect Handover SLA | PCAB Lic. #48921-A
+          </div>
+</div>
+<!-- Clean 4-Column Technical Specification Strip (No heavy rounded box containers) -->
+<div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y lg:divide-y-0 lg:divide-x divide-surface-container border-b border-surface-container pb-8">
+<div class="py-4 lg:py-0 lg:px-6 first:pl-0 space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-label-code text-xs font-bold text-primary bg-primary-fixed/20 px-2 py-0.5 rounded">01. PRE-SURVEY</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">analytics</span>
+</div>
+<h4 class="font-headline-sm text-base font-bold text-on-surface uppercase">Heat Load &amp; Clearances</h4>
+<p class="font-body-sm text-on-surface-variant text-xs leading-relaxed">
+              ASHRAE-standard digital heat calculation, architectural duct clearance inspection, and breaker amperage load audits before lifting equipment.
+            </p>
+<div class="text-[11px] font-label-code text-primary font-medium pt-1">ASHRAE &amp; PEC Verified</div>
+</div>
+<div class="py-4 lg:py-0 lg:px-6 space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-label-code text-xs font-bold text-primary bg-primary-fixed/20 px-2 py-0.5 rounded">02. PRESSURE TEST</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">speed</span>
+</div>
+<h4 class="font-headline-sm text-base font-bold text-on-surface uppercase">550 PSI Nitrogen Hold</h4>
+<p class="font-body-sm text-on-surface-variant text-xs leading-relaxed">
+              Mandatory 24-hour dry nitrogen pressure hold testing at 550 PSI across copper manifolds to identify and eradicate micro-leak points.
+            </p>
+<div class="text-[11px] font-label-code text-primary font-medium pt-1">24-Hr Zero-Drop Standard</div>
+</div>
+<div class="py-4 lg:py-0 lg:px-6 space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-label-code text-xs font-bold text-primary bg-primary-fixed/20 px-2 py-0.5 rounded">03. VACUUM PURGE</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">airwave</span>
+</div>
+<h4 class="font-headline-sm text-base font-bold text-on-surface uppercase">&lt;500 Micron Evacuation</h4>
+<p class="font-body-sm text-on-surface-variant text-xs leading-relaxed">
+              Deep two-stage rotary vacuum evacuation below 500 microns to extract non-condensable moisture, safeguarding factory R32 / R410A oil purity.
+            </p>
+<div class="text-[11px] font-label-code text-primary font-medium pt-1">Deep Moisture Elimination</div>
+</div>
+<div class="py-4 lg:py-0 lg:px-6 last:pr-0 space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-label-code text-xs font-bold text-primary bg-primary-fixed/20 px-2 py-0.5 rounded">04. HANDOVER</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">verified</span>
+</div>
+<h4 class="font-headline-sm text-base font-bold text-on-surface uppercase">DOLE &amp; BIR Certs</h4>
+<p class="font-body-sm text-on-surface-variant text-xs leading-relaxed">
+              Signed mechanical commissioning logbooks, BIR 2307 Official Receipts, DOLE DO-174 safety sheets, and genuine OEM manufacturer warranties.
+            </p>
+<div class="text-[11px] font-label-code text-primary font-medium pt-1">Complete Legal Handover</div>
+</div>
+</div>
+<!-- Inline Ticker: Multi-Brand Supply Authority & Regional Logistics (Sleek minimalist directory replacing multiple card grids) -->
+<div class="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+<!-- Brands Ticker -->
+<div class="lg:col-span-6 space-y-2">
+<div class="text-xs font-label-code uppercase text-on-surface-variant font-semibold tracking-wider flex items-center gap-2">
+<span class="material-symbols-outlined text-[15px] text-primary">precision_manufacturing</span>
+              Authorized Multi-Brand Supply &amp; Engineering
+            </div>
+<div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-label-code font-bold text-on-surface pt-1">
+<span class="hover:text-primary transition-colors">MITSUBISHI ELECTRIC (VRF)</span>
+<span class="text-outline-variant">/</span>
+<span class="hover:text-primary transition-colors">DAIKIN VRV</span>
+<span class="text-outline-variant">/</span>
+<span class="hover:text-primary transition-colors">CARRIER COMMERCIAL</span>
+<span class="text-outline-variant">/</span>
+<span class="hover:text-primary transition-colors">KOPPEL &amp; MIDEA</span>
+<span class="text-outline-variant">/</span>
+<span class="text-primary hover:underline">CANRIV APEX ELEVATORS</span>
+</div>
+</div>
+<!-- Regional Hubs Ticker -->
+<div class="lg:col-span-6 space-y-2 lg:border-l lg:border-surface-container lg:pl-8">
+<div class="text-xs font-label-code uppercase text-on-surface-variant font-semibold tracking-wider flex items-center gap-2">
+<span class="material-symbols-outlined text-[15px] text-primary">local_shipping</span>
+              Multi-Hub Dispatch Coverage
+            </div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-body-sm pt-1">
+<div>
+<strong class="font-label-code text-on-surface block text-[11px]">NCR &amp; BGC HUB</strong>
+<span class="text-on-surface-variant text-[11px]">Dispatch: (02) 8294-5436</span>
+</div>
+<div>
+<strong class="font-label-code text-on-surface block text-[11px]">VALENZUELA CENTRAL</strong>
+<span class="text-on-surface-variant text-[11px]">Logistics: (02) 8463-9559</span>
+</div>
+<div>
+<strong class="font-label-code text-on-surface block text-[11px]">CABANATUAN NORTH</strong>
+<span class="text-on-surface-variant text-[11px]">Mobile: 0927-718-5914</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- FULL-BLEED INQUIRY & DISPATCH BANNER (Clean, confident strip without bulky nested cards) -->
+<section class="w-full bg-inverse-surface text-inverse-on-surface py-14 px-gutter">
+<div class="max-w-[1440px] mx-auto">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+<div class="max-w-2xl space-y-2">
+<div class="inline-flex items-center gap-2 text-primary-fixed font-label-code text-xs font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-[16px]">support_agent</span> Engineering Survey &amp; Quotation
+            </div>
+<h3 class="font-headline-lg text-2xl md:text-3xl font-bold uppercase tracking-tight text-white">
+              Need Turnkey HVAC Installation or Scheduled VRF Preventive Maintenance?
+            </h3>
+<p class="font-body-sm text-inverse-on-surface/80 text-xs md:text-sm leading-relaxed max-w-xl">
+              Facility engineers, architects, and corporate administrators can schedule an on-site mechanical survey, duct load review, and bill of quantities (BOQ). Official BIR receipts and DOLE safety dockets provided.
+            </p>
+</div>
+<!-- Direct Hotline Grid -->
+<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 flex-shrink-0">
+<div class="bg-white/10 backdrop-blur-xs px-5 py-3 rounded border border-white/15 text-left font-label-code text-xs space-y-1">
+<div class="text-primary-fixed uppercase font-semibold text-[10px] tracking-wider">Immediate Dispatch Hotlines</div>
+<div class="text-white text-sm font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary-fixed">call</span>
+<a class="hover:text-primary-fixed" href="tel:09277185914">0927-718-5914</a>
+<span class="text-white/40">/</span>
+<a class="hover:text-primary-fixed" href="tel:0282945436">(02) 8294-5436</a>
+</div>
+<div class="text-inverse-on-surface/70 text-[11px]">Smart: 0920-456-0209 | Globe: 0926-651-9719</div>
+</div>
+<a class="px-6 py-4 bg-primary-fixed text-on-primary-fixed font-headline-sm uppercase font-bold text-sm rounded hover:bg-white transition-colors flex items-center justify-center gap-2 text-center shadow-md" href="mailto:canrivj@gmail.com?subject=Direct%20HVAC%20Quotation%20Request">
+<span class="material-symbols-outlined text-[18px]">send</span> Email canrivj@gmail.com
+            </a>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- FOOTER -->
+
+</div>

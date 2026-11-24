@@ -48,6 +48,50 @@ add_action('admin_post_canriv_export_orders', function () {
     exit;
 });
 
+add_action('admin_post_canriv_update_request', function () {
+    if (!current_user_can('manage_options')) wp_die('Administrators only.', '', ['response' => 403]);
+    $id = absint($_POST['request_id'] ?? 0);
+    check_admin_referer('canriv_update_request_' . $id);
+    $status = isset($_POST['request_status']) && is_string($_POST['request_status']) ? sanitize_key(wp_unslash($_POST['request_status'])) : '';
+    $type = get_post_meta($id, 'canriv_request_type', true);
+    $return_args = ['order_view' => $type === 'reserve' ? 'reservations' : 'quotes', 'inspect_request' => $id];
+    $return = add_query_arg($return_args, canriv_page_url('order-management')) . '#inspector-panel';
+    if (get_post_type($id) !== 'canriv_request' || !in_array($type, ['reserve', 'contact', 'rfq', 'home'], true) || !in_array($status, ['accepted', 'declined'], true)) {
+        wp_die('This request can no longer be updated.', '', ['response' => 400]);
+    }
+    $current_status = get_post_meta($id, 'canriv_request_status', true) ?: 'pending';
+    if ($current_status === 'pending') {
+        update_post_meta($id, 'canriv_request_status', $status);
+        $return = add_query_arg('request_update', 'saved', $return);
+    } else {
+        $return = add_query_arg('request_update', $current_status === $status ? 'already_saved' : 'already_decided', $return);
+    }
+    wp_safe_redirect($return);
+    exit;
+});
+
+add_action('admin_post_canriv_update_order', function () {
+    if (!current_user_can('manage_options')) wp_die('Administrators only.', '', ['response' => 403]);
+    $id = absint($_POST['order_id'] ?? 0);
+    check_admin_referer('canriv_update_order_' . $id);
+    $order = wc_get_order($id);
+    $decision = isset($_POST['decision']) && is_string($_POST['decision']) ? sanitize_key(wp_unslash($_POST['decision'])) : '';
+    if (!$order || !in_array($order->get_status(), ['pending', 'on-hold', 'processing'], true) || !in_array($decision, ['accept', 'decline'], true)) {
+        wp_die('This order can no longer be updated.', '', ['response' => 400]);
+    }
+    if ($decision === 'accept') {
+        if ($order->get_status() !== 'processing') $order->update_status('processing', 'Order accepted by an administrator.');
+        $order->update_meta_data('canriv_admin_decision', 'accepted');
+        $order->save();
+    } else {
+        $order->update_status('cancelled', $order->is_paid()
+            ? 'Order declined by an administrator. Payment was captured; issue a refund manually.'
+            : 'Order declined by an administrator.');
+    }
+    wp_safe_redirect(add_query_arg(['order_view' => 'orders', 'inspect_order' => $id], canriv_page_url('order-management')) . '#inspector-panel');
+    exit;
+});
+
 function canriv_order_directory() {
     if (!current_user_can('manage_options')) {
         return '';
@@ -55,7 +99,7 @@ function canriv_order_directory() {
     [$args, $filters, $statuses] = canriv_order_filters();
     $base = canriv_page_url('order-management');
     $view = $filters['order_view'] ?? '';
-    $view = in_array($view, ['reservations', 'quotes'], true) ? $view : 'orders';
+    $view = in_array($view, ['reservations', 'quotes', 'requests'], true) ? $view : 'orders';
     $url = static fn($params = []) => add_query_arg($params + $filters, $base);
     $page = isset($_GET['orders_page']) && is_scalar($_GET['orders_page']) ? max(1, absint($_GET['orders_page'])) : 1;
     $query = wc_get_orders($args + ['limit' => 10, 'page' => $page, 'paginate' => true]);
@@ -72,14 +116,23 @@ function canriv_order_directory() {
             $selected = $order;
         }
     }
-    $request_args = ['post_type' => 'canriv_request', 'post_status' => 'private', 'posts_per_page' => 9];
+    $request_args = ['post_type' => 'canriv_request', 'post_status' => 'private', 'posts_per_page' => -1];
     $request_query = new WP_Query($request_args + ['meta_key' => 'canriv_request_type', 'meta_value' => 'reserve']);
-    $quote_query = new WP_Query($request_args + ['meta_key' => 'canriv_request_type', 'meta_value' => ['rfq', 'home'], 'meta_compare' => 'IN']);
-    $requests = $view === 'quotes' ? $quote_query->posts : $request_query->posts;
+    $quote_query = new WP_Query($request_args + ['meta_key' => 'canriv_request_type', 'meta_value' => ['rfq', 'home', 'contact'], 'meta_compare' => 'IN']);
+    $all_requests_query = new WP_Query($request_args + ['meta_key' => 'canriv_request_type', 'meta_value' => ['reserve', 'rfq', 'home', 'contact'], 'meta_compare' => 'IN']);
+    $requests = $view === 'quotes' ? $quote_query->posts : ($view === 'reservations' ? $request_query->posts : $all_requests_query->posts);
+    $requested_request_id = isset($_GET['inspect_request']) && is_scalar($_GET['inspect_request']) ? absint($_GET['inspect_request']) : 0;
+    $selected_request = null;
+    foreach ($requests as $request) {
+        if ((int) $request->ID === $requested_request_id) {
+            $selected_request = $request;
+            break;
+        }
+    }
     $count_orders = array_sum(array_map(static fn($status) => wc_orders_count(substr($status, 3)), array_keys($statuses)));
     $active = wc_orders_count('processing') + wc_orders_count('pending') + wc_orders_count('on-hold');
     $icon = static fn($name) => '<span class="material-symbols-outlined canriv-directory-icon" aria-hidden="true">' . esc_html($name) . '</span>';
-    $section = static function ($name) use ($view, $base, $url, $page, $pages, $orders, $selected, $requests, $icon, $filters, $statuses, $count_orders, $request_query, $quote_query) {
+    $section = static function ($name) use ($view, $base, $url, $page, $pages, $orders, $selected, $requests, $selected_request, $icon, $filters, $statuses, $count_orders, $request_query, $quote_query, $all_requests_query) {
         ob_start();
         require __DIR__ . '/assets/order-management-data.php';
         return ob_get_clean();

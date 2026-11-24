@@ -84,6 +84,12 @@ function canriv_audience_dashboard() {
     $table = $wpdb->prefix . 'canriv_audience_daily';
     $activity = ['page_view' => 0, 'product_view' => 0, 'add_to_cart' => 0];
     $daily = [];
+    $shop_products = canriv_shop_products();
+    $shop_product_ids = array_map(static fn($product) => $product->get_id(), $shop_products);
+    $product_stats = [];
+    foreach ($shop_products as $product) {
+        $product_stats[$product->get_id()] = (object) ['object_id' => $product->get_id(), 'views' => 0, 'carts' => 0, 'units' => 0, 'revenue' => 0.0];
+    }
     for ($day = $start; $day <= current_datetime(); $day = $day->modify('+1 day')) {
         $daily[$day->format('Y-m-d')] = 0;
     }
@@ -100,19 +106,38 @@ function canriv_audience_dashboard() {
                 $daily[$row->day] = (int) $row->total;
             }
         }
+        $shop_ids_sql = $shop_product_ids ? implode(',', array_map('absint', $shop_product_ids)) : '0';
         $pages = $wpdb->get_results($wpdb->prepare("SELECT a.object_id, SUM(a.hits) AS views
             FROM $table a JOIN $wpdb->posts p ON p.ID = a.object_id
             WHERE a.day >= %s AND a.activity IN ('page_view','product_view') AND p.post_status = 'publish'
+            AND (p.post_type <> 'product' OR p.ID IN ($shop_ids_sql))
             GROUP BY a.object_id ORDER BY views DESC, a.object_id ASC LIMIT 8", $start_day));
-        $products = $wpdb->get_results($wpdb->prepare("SELECT a.object_id,
+        $activity_rows = $shop_product_ids ? $wpdb->get_results($wpdb->prepare("SELECT a.object_id,
             SUM(CASE WHEN a.activity = 'product_view' THEN a.hits ELSE 0 END) AS views,
             SUM(CASE WHEN a.activity = 'add_to_cart' THEN a.hits ELSE 0 END) AS carts
             FROM $table a JOIN $wpdb->posts p ON p.ID = a.object_id
-            WHERE a.day >= %s AND p.post_type = 'product' AND p.post_status = 'publish'
-            GROUP BY a.object_id HAVING views > 0 OR carts > 0 ORDER BY views DESC, carts DESC, a.object_id ASC LIMIT 15", $start_day));
+            WHERE a.day >= %s AND p.post_type = 'product' AND p.post_status = 'publish' AND p.ID IN ($shop_ids_sql)
+            GROUP BY a.object_id", $start_day)) : [];
+        foreach ($activity_rows as $row) {
+            if (isset($product_stats[$row->object_id])) {
+                $product_stats[$row->object_id]->views = (int) $row->views;
+                $product_stats[$row->object_id]->carts = (int) $row->carts;
+            }
+        }
     }
     $orders = wc_get_orders(['limit' => 1, 'paginate' => true, 'date_created' => '>=' . $start->getTimestamp(),
         'status' => array_keys(wc_get_order_statuses())]);
+    foreach (wc_get_orders(['limit' => -1, 'status' => ['wc-processing', 'wc-completed', 'wc-on-hold'], 'date_created' => '>=' . $start->getTimestamp()]) as $order) {
+        foreach ($order->get_items('line_item') as $item) {
+            $product_id = $item->get_product_id();
+            if (isset($product_stats[$product_id])) {
+                $product_stats[$product_id]->units += (int) $item->get_quantity();
+                $product_stats[$product_id]->revenue += (float) $item->get_total();
+            }
+        }
+    }
+    $products = array_values($product_stats);
+    usort($products, static fn($a, $b) => [$b->views, $b->carts, $b->units, $b->revenue] <=> [$a->views, $a->carts, $a->units, $a->revenue]);
     $request_count = static fn($types) => (new WP_Query([
         'post_type' => 'canriv_request', 'post_status' => 'private', 'posts_per_page' => 1, 'fields' => 'ids',
         'meta_key' => 'canriv_request_type', 'meta_value' => $types, 'meta_compare' => 'IN',

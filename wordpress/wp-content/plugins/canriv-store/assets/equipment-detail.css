@@ -1,0 +1,59 @@
+.canriv-equipment-detail-page { background:#f6f8ff; color:#10253d; }
+.canriv-equipment-detail { width:min(100% - 2rem, 1240px); margin:0 auto; padding:1.25rem 0 3rem; font-family:Inter,sans-serif; }
+.canriv-equipment-detail :is(h1,h2,h3,p,ul,dl) { margin:0; }
+.canriv-equipment-detail :is(h1,h2,h3) { font-family:'Barlow Condensed',sans-serif; color:#10253d; }
+.canriv-equipment-detail a { color:#00685f; }
+.canriv-equipment-breadcrumbs { display:flex; flex-wrap:wrap; align-items:center; gap:.55rem; padding:.75rem 0 1.2rem; border-bottom:1px solid #dbe5f5; color:#526579; font:.72rem 'JetBrains Mono',monospace; }
+.canriv-equipment-breadcrumbs a { display:inline-flex; align-items:center; gap:.25rem; color:#31506a; text-decoration:none; }
+.canriv-equipment-breadcrumbs a:hover,.canriv-equipment-breadcrumbs [aria-current] { color:#00685f; }
+.canriv-equipment-breadcrumbs .material-symbols-outlined { font-size:1rem; }
+.canriv-equipment-hero { display:grid; grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr); align-items:start; gap:clamp(1.25rem,3vw,2.5rem); padding:1.5rem 0 2.5rem; }
+.canriv-equipment-gallery { display:grid; gap:.85rem; }
+.canriv-equipment-photo { position:relative; overflow:hidden; min-height:340px; display:flex; align-items:center; justify-content:center; padding:1.15rem; border:1px solid #d9e3f3; border-radius:.7rem; background:#fff; }
+.canriv-equipment-photo img { width:100%; max-height:430px; aspect-ratio:1.58; object-fit:contain; }
+.canriv-equipment-photo-brand { position:absolute; z-index:1; top:.9rem; left:.9rem; display:inline-flex; align-items:center; gap:.35rem; padding:.42rem .62rem; border-radius:999px; background:#e4edff; color:#075c73; font:700 .64rem 'JetBrains Mono',monospace; letter-spacing:.04em; }
+.canriv-equipment-photo-brand .material-symbols-outlined { font-size:.9rem; }
+.canriv-equipment-overview { padding:1rem; border:1px solid #d9e3f3; border-radius:.65rem; background:#fff; }
+.canriv-equipment-overview h2,.canriv-project-details h2 { margin-bottom:.65rem; font-size:1.15rem; text-transform:uppercase; }
+.canriv-equipment-overview dl { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.55rem; }
+.canriv-equipment-overview dl > div { min-width:0; padding:.6rem .65rem; border-radius:.35rem; background:#edf2ff; }
+.canriv-equipment-overview dt,.canriv-project-details span { color:#60738a; font:.58rem 'JetBrains Mono',monospace; text-transform:uppercase; letter-spacing:.025em; }
+.canriv-equipment-overview dd { margin:.25rem 0 0; color:#14304c; font-size:.72rem; font-weight:650; line-height:1.35; }
+.canriv-equipment-summary { padding:.25rem 0; }
+.canriv-equipment-kicker { display:flex; align-items:center; gap:.4rem; margin-bottom:.55rem !important; color:#00685f; font:700 .67rem 'JetBrains Mono',monospace; letter-spacing:.04em; text-transform:uppercase; }
+.canriv-equipment-kicker span { display:inline-grid; place-items:center; width:1.45rem; height:1.45rem; border-radius:.25rem; background:#d8f5ef; }
+.canriv-equipment-summary h1 { font-size:clamp(2rem,3.4vw,3rem); line-height:1.02; text-transform:uppercase; }
+.canriv-equipment-description { margin-top:.65rem !important; color:#40546b; font-size:.88rem; line-height:1.55; }
+.canriv-project-quote { display:flex; align-items:flex-start; gap:.65rem; margin-top:1rem; padding:.8rem .9rem; border:1px solid #dce7fb; border-radius:.45rem; background:#eaf1ff; }
+.canriv-project-quote > .material-symbols-outlined { color:#00685f; font-size:1.15rem; }
+.canriv-project-quote h2 { font:700 .88rem Inter,sans-serif; color:#0d4160; }
+.canriv-project-quote p { margin-top:.22rem; color:#526579; font-size:.68rem; line-height:1.4; }
+.canriv-equipment-highlights-title { margin-top:1rem !important; font-size:1.2rem; text-transform:uppercase; }
+.canriv-equipment-highlights { display:grid; gap:.42rem; margin:.55rem 0 0 !important; padding:0; list-style:none; }
+.canriv-equipment-highlights li { display:flex; align-items:flex-start; gap:.45rem; color:#263b54; font-size:.75rem; line-height:1.4; }
+.canriv-equipment-highlights .material-symbols-outlined { flex:0 0 auto; color:#00877e; font-size:1rem; }
+.canriv-equipment-quote-button { display:flex; align-items:center; justify-content:center; gap:.55rem; min-height:2.8rem; margin-top:1rem; padding:.7rem 1rem; border-radius:.35rem; background:#00766b; color:#fff !important; font-size:.8rem; font-weight:700; text-decoration:none; transition:background .18s,transform .18s; }
+.canriv-equipment-quote-button:hover { background:#005f56; transform:translateY(-1px); }
+.canriv-equipment-quote-button .material-symbols-outlined { font-size:1rem; }
+.canriv-project-details { display:grid; grid-template-columns:1fr 1fr; gap:.5rem; margin-top:.9rem; padding:.75rem; border:1px solid #dce7fb; border-radius:.45rem; background:#fff; }
+.canriv-project-details h2 { grid-column:1/-1; margin:0; font-size:1rem; }
+.canriv-project-details > div { display:grid; gap:.25rem; padding:.55rem; border-radius:.3rem; background:#f0f4ff; }
+.canriv-project-details strong { color:#1e3650; font-size:.68rem; font-weight:600; line-height:1.35; }
+.canriv-related-equipment { padding:1.45rem; border:1px solid #e0e8f5; border-radius:.7rem; background:#fff; }
+.canriv-related-heading { display:flex; align-items:end; justify-content:space-between; gap:1rem; margin-bottom:1rem; }
+.canriv-related-heading p { margin-bottom:.25rem; color:#007b72; font:700 .62rem 'JetBrains Mono',monospace; letter-spacing:.07em; }
+.canriv-related-heading h2 { font-size:1.8rem; line-height:1; text-transform:uppercase; }
+.canriv-related-heading > a { display:inline-flex; align-items:center; gap:.3rem; flex:0 0 auto; color:#00685f; font-size:.68rem; font-weight:700; text-decoration:none; }
+.canriv-related-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.9rem; }
+.canriv-related-equipment-card { display:flex; flex-direction:column; min-width:0; padding:.65rem; border:1px solid #e0e8f5; border-radius:.45rem; background:#fff; }
+.canriv-related-image { display:block; overflow:hidden; aspect-ratio:1.65; border-radius:.3rem; background:#edf2fb; }
+.canriv-related-image img { width:100%; height:100%; object-fit:cover; transition:transform .2s; }
+.canriv-related-image:hover img { transform:scale(1.035); }
+.canriv-related-category { margin-top:.55rem !important; color:#00685f; font:600 .56rem 'JetBrains Mono',monospace; text-transform:uppercase; }
+.canriv-related-equipment-card h3 { margin-top:.22rem; font-size:1.2rem; line-height:1.1; text-transform:uppercase; }
+.canriv-related-equipment-card h3 a { color:#10253d; text-decoration:none; }
+.canriv-related-description { display:-webkit-box; overflow:hidden; margin-top:.35rem !important; color:#53657b; font-size:.65rem; line-height:1.45; -webkit-box-orient:vertical; -webkit-line-clamp:3; }
+.canriv-related-link { display:flex; align-items:center; justify-content:center; gap:.35rem; min-height:2rem; margin-top:auto; padding:.42rem; border-radius:.25rem; background:#00766b; color:#fff !important; font-size:.66rem; font-weight:700; text-decoration:none; }
+.canriv-related-link:hover { background:#005f56; }
+@media(max-width:850px) { .canriv-equipment-hero { grid-template-columns:1fr; } .canriv-equipment-photo { min-height:260px; } }
+@media(max-width:620px) { .canriv-equipment-detail { width:min(100% - 1.2rem,1240px); padding-top:.7rem; } .canriv-equipment-overview dl { grid-template-columns:1fr; } .canriv-equipment-overview dl > div { display:grid; grid-template-columns:.8fr 1.2fr; gap:.4rem; align-items:center; } .canriv-equipment-overview dd { margin:0; } .canriv-related-equipment { padding:.85rem; } .canriv-related-heading { align-items:start; flex-direction:column; } .canriv-related-grid { grid-template-columns:1fr; } .canriv-related-image { aspect-ratio:1.9; } }

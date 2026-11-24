@@ -1,0 +1,45 @@
+PAGE  widget ab58223
+<div class="bg-surface text-on-surface font-body-md antialiased"><section class="w-full bg-surface-container-low py-space-xl">
+<div class="max-w-[1440px] mx-auto px-gutter">
+<div class="bg-surface-container-lowest rounded-2xl p-space-lg lg:p-space-xl shadow-md relative overflow-hidden">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-center">
+<div class="lg:col-span-7 space-y-space-sm">
+
+<h2 class="font-headline-lg text-headline-lg text-on-surface uppercase font-bold">
+              “BREATHE COOL, LEARN WELL” CLASSROOM VENTILATION PROJECT
+            </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+              In response to severe heatwaves affecting Philippine educational institutions, Canriv-J Corporation pledges a percentage of commercial installation proceeds toward outfitting high-density public school classrooms across Pampanga, Tarlac, and Pangasinan with energy-efficient cooling and fresh-air ventilation.
+            </p>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-sm pt-space-xs">
+<div class="p-3 rounded bg-surface-container-low">
+<span class="font-label-price text-headline-sm text-primary block">142</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Classrooms Equipped</span>
+</div>
+<div class="p-3 rounded bg-surface-container-low">
+<span class="font-label-price text-headline-sm text-primary block">8,500+</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Students Benefited</span>
+</div>
+<div class="p-3 rounded bg-surface-container-low">
+<span class="font-label-price text-headline-sm text-primary block">100%</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Free Quarterly Servicing</span>
+</div>
+</div>
+<div class="pt-space-xs">
+<span class="inline-flex items-center gap-2 text-primary font-title-md text-title-md font-semibold hover:underline">
+<span>Read our 2025 Luzon Educational Impact Report</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</span>
+</div>
+</div>
+<div class="lg:col-span-5 relative">
+<div class="h-80 w-full rounded-xl overflow-hidden shadow-sm">
+<img alt="Philippine public school classroom with modern wall-mounted inverter air conditioner installed, smiling high school students studying comfortably in well-ventilated bright classroom with teacher, warm documentary photograph" class="w-full h-full object-cover" data-alt="Philippine public school classroom with modern wall-mounted inverter air conditioner installed, smiling high school students studying comfortably in well-ventilated bright classroom with teacher, warm documentary photograph" src="http://localhost/canriv/wordpress/wp-content/plugins/canriv-store/assets/604d9589e4793dfd.jpg"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section></div>
+PAGE  widget 2268e9c
+%%CANRIV:aircon-shop-photos%%%%CANRIV:vertical-transport-summary%%

@@ -1,0 +1,7 @@
+2026-11-22T04:17:05+00:00 WARNING Email "cancelled_order" for order #52 failed to send: Could not instantiate mail function. CONTEXT: {"email_type":"cancelled_order","status":"failed","recipient":"mj3","order":52}
+2026-11-22T04:17:05+00:00 NOTICE Email "customer_cancelled_order" for order #52 not sent: email type is disabled CONTEXT: {"email_type":"customer_cancelled_order","status":"disabled","recipient":"canriv-test-5287e7d0","order":52}
+2026-11-22T04:25:21+00:00 WARNING Email "customer_new_account" for user #26 failed to send: Could not instantiate mail function. CONTEXT: {"email_type":"customer_new_account","status":"failed","recipient":"mark.de jesus","user":26}
+2026-11-22T04:30:51+00:00 WARNING Email "new_order" for order #192 failed to send: Could not instantiate mail function. CONTEXT: {"email_type":"new_order","status":"failed","recipient":"mj3","order":192}
+2026-11-22T04:30:56+00:00 WARNING Email "customer_processing_order" for order #192 failed to send: Could not instantiate mail function. CONTEXT: {"email_type":"customer_processing_order","status":"failed","recipient":"mark.de jesus","order":192}
+2026-11-22T05:05:54+00:00 WARNING Email "new_order" for order #193 failed to send: Could not instantiate mail function. CONTEXT: {"email_type":"new_order","status":"failed","recipient":"mj3","order":193}
+2026-11-22T05:05:56+00:00 WARNING Email "customer_processing_order" for order #193 failed to send: Could not instantiate mail function. CONTEXT: {"email_type":"customer_processing_order","status":"failed","recipient":"mark.de jesus","order":193}

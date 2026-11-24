@@ -22,6 +22,7 @@ $icon = static fn($name) => '<span class="material-symbols-outlined canriv-custo
             $profile_messages = [
                 'saved' => 'Account changes saved.',
                 'invalid' => 'Check your contact details, address, and four-digit postal code.',
+                'phone_invalid' => 'Enter a valid Philippine mobile number, such as 0917 123 4567.',
                 'email_used' => 'That email address is already in use.',
                 'password_current' => 'Enter your correct current password to make a password change.',
                 'password_invalid' => 'Use a unique password of 8–128 characters and make sure both new password fields match.',
@@ -46,7 +47,7 @@ $icon = static fn($name) => '<span class="material-symbols-outlined canriv-custo
                             ['phone', 'Philippine mobile number', $customer->get_billing_phone(), 'tel', 'tel', false],
                         ];
                         foreach ($personal as [$key, $label, $value, $type, $autocomplete, $required]) : ?>
-                            <label><?= esc_html($label) ?><input type="<?= esc_attr($type) ?>" name="<?= esc_attr($key) ?>" value="<?= esc_attr($value) ?>" autocomplete="<?= esc_attr($autocomplete) ?>" <?= $required ? 'required' : '' ?>></label>
+                            <label><?= esc_html($label) ?><input type="<?= esc_attr($type) ?>" name="<?= esc_attr($key) ?>" value="<?= esc_attr($value) ?>" autocomplete="<?= esc_attr($autocomplete) ?>" <?= $key === 'phone' ? 'inputmode="tel" maxlength="16" placeholder="0917 123 4567"' : '' ?> <?= $required ? 'required' : '' ?>></label>
                         <?php endforeach; ?>
                     </div>
                 </fieldset>
@@ -57,12 +58,7 @@ $icon = static fn($name) => '<span class="material-symbols-outlined canriv-custo
                         <label class="canriv-customer-wide">Unit, floor, or building (optional)<input name="address_2" autocomplete="address-line2" value="<?= esc_attr($customer->get_meta('canriv_address_unit')) ?>"></label>
                         <label class="canriv-customer-third">Barangay<input name="barangay" autocomplete="address-level3" value="<?= esc_attr($customer->meta_exists('canriv_address_barangay') ? $customer->get_meta('canriv_address_barangay') : $customer->get_shipping_address_2()) ?>" required></label>
                         <label class="canriv-customer-third">City / Municipality<input name="city" autocomplete="address-level2" value="<?= esc_attr($customer->get_shipping_city()) ?>" required></label>
-                        <label class="canriv-customer-third">Province / Region<select name="state" autocomplete="address-level1" required>
-                            <option value="">Select a province</option>
-                            <?php foreach ($provinces as $code => $name) : ?>
-                                <option value="<?= esc_attr($code) ?>" <?php selected((string) $code, $customer->get_shipping_state()); ?>><?= esc_html($name) ?></option>
-                            <?php endforeach; ?>
-                        </select></label>
+                        <label class="canriv-customer-third">Province / Region<input class="canriv-readonly-field" type="text" value="<?= esc_attr($provinces[$customer->get_shipping_state()] ?? 'No province on file') ?>" readonly aria-readonly="true"><input type="hidden" name="state" value="<?= esc_attr($customer->get_shipping_state()) ?>"></label>
                         <label>Postal / ZIP code<input name="postcode" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" value="<?= esc_attr($customer->get_shipping_postcode()) ?>" required></label>
                         <label>Installation site notes (optional)<textarea name="installation_notes" maxlength="500" rows="1"><?= esc_textarea($customer->get_meta('canriv_installation_notes')) ?></textarea></label>
                     </div>
@@ -108,7 +104,7 @@ $icon = static fn($name) => '<span class="material-symbols-outlined canriv-custo
             <article class="canriv-customer-order">
                 <div>
                     <h3>Order #<?= esc_html($order->get_order_number()) ?></h3>
-                    <p><?= esc_html(wc_format_datetime($order->get_date_created())) ?> · <span class="canriv-customer-status"><?= esc_html(wc_get_order_status_name($order->get_status())) ?></span></p>
+                    <p><?= esc_html(wc_format_datetime($order->get_date_created())) ?> · <span class="canriv-customer-status"><?= esc_html($order->get_meta('canriv_admin_decision') === 'accepted' || $order->has_status('processing') ? 'Accepted' : wc_get_order_status_name($order->get_status())) ?></span></p>
                     <ul><?php foreach ($order->get_items() as $item) : ?><li><?= esc_html($item->get_quantity() . ' × ' . $item->get_name()) ?></li><?php endforeach; ?></ul>
                 </div>
                 <div class="canriv-customer-order-total"><small>Total amount</small><strong><?= wp_kses_post($order->get_formatted_order_total()) ?></strong>

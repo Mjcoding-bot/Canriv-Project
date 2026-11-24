@@ -10,7 +10,7 @@
             <label class="screen-reader-text" for="canriv-directory-role">Account role</label>
             <select id="canriv-directory-role" class="canriv-directory-control bg-surface-container-low" name="account_role">
                 <option value="">All account roles</option>
-                <?php foreach (wp_roles()->get_names() as $role => $label) : ?>
+                <?php foreach (wp_roles()->get_names() as $role => $label) : if ($role === 'subscriber') continue; ?>
                     <option value="<?= esc_attr($role) ?>" <?php selected($filters['account_role'] ?? '', $role); ?>><?= esc_html(translate_user_role($label)) ?></option>
                 <?php endforeach; ?>
             </select>
@@ -18,7 +18,7 @@
             <?php if ($filters) : ?><a class="canriv-directory-control bg-surface-container-high" href="<?= esc_url($base) ?>">Clear</a><?php endif; ?>
         </div>
         <div class="flex flex-wrap gap-space-xs" aria-label="Account segments">
-            <?php foreach (['' => 'All users', 'customer' => 'Customers', 'subscriber' => 'Subscribers', 'administrator' => 'Administrators', 'shop_manager' => 'Shop managers'] as $role => $label) :
+            <?php foreach (['' => 'All users', 'customer' => 'Customers', 'administrator' => 'Administrators', 'shop_manager' => 'Shop managers'] as $role => $label) :
                 $active = ($filters['account_role'] ?? '') === $role;
                 $segment = add_query_arg(array_filter(['account_search' => $filters['account_search'] ?? '', 'account_role' => $role]), $base);
                 ?>

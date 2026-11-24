@@ -5,6 +5,45 @@ document.addEventListener('DOMContentLoaded', () => {
     const search = document.getElementById('canriv-search');
     const sort = document.getElementById('catalog-sort');
     const price = document.getElementById('catalog-price');
+    const brandFilters = document.getElementById('catalog-brand-filters');
+    const brandCounts = new Map();
+    for (const card of cards) {
+        const brand = card.dataset.brand;
+        if (brand) brandCounts.set(brand, (brandCounts.get(brand) ?? 0) + 1);
+    }
+    if (brandFilters) {
+        for (const [brand, count] of [...brandCounts].sort(([a], [b]) => a.localeCompare(b))) {
+            const label = document.createElement('label');
+            label.className = 'flex items-center justify-between cursor-pointer group';
+            const name = document.createElement('span');
+            name.className = 'flex items-center gap-2';
+            const input = document.createElement('input');
+            input.className = 'accent-primary w-4 h-4 rounded cursor-pointer';
+            input.type = 'checkbox';
+            input.dataset.filter = 'brand';
+            input.value = brand;
+            const text = document.createElement('span');
+            text.className = 'group-hover:text-primary';
+            text.textContent = brand.charAt(0).toUpperCase() + brand.slice(1);
+            const total = document.createElement('span');
+            total.className = 'font-label-code text-body-sm text-outline';
+            total.textContent = count;
+            name.append(input, text);
+            label.append(name, total);
+            brandFilters.append(label);
+        }
+    }
+    const priceValues = cards.map((card) => Number(card.dataset.price)).filter((value) => Number.isFinite(value) && value > 0);
+    if (priceValues.length) {
+        const minPrice = Math.min(...priceValues);
+        const maxPrice = Math.max(...priceValues);
+        price.min = minPrice;
+        price.max = maxPrice;
+        price.value = maxPrice;
+        for (const label of document.querySelectorAll('[data-price-min]')) {
+            label.textContent = '₱' + minPrice.toLocaleString('en-PH');
+        }
+    }
     const filters = Array.from(document.querySelectorAll('[data-filter]'));
     const chips = document.getElementById('catalog-filter-chips');
     let sortChanged = false;

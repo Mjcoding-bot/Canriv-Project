@@ -27,12 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
             filterJobs();
         });
     }
-    for (const link of document.querySelectorAll('[data-apply-role]')) {
-        link.addEventListener('click', () => {
-            document.getElementById('career-position').value = link.dataset.applyRole;
-        });
-    }
     const input = document.getElementById('career-resume');
+    if (!input) { filterJobs(); return; }
     const drop = document.getElementById('career-upload');
     const label = document.getElementById('career-file-name');
     function showFile() {

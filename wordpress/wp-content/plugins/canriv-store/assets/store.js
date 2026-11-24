@@ -1,4 +1,46 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const mobileInputs = document.querySelectorAll(
+        '#contactNumber, .canriv-customer-portal input[name="phone"], .canriv-form input[name="phone"]'
+    );
+    for (const phone of mobileInputs) {
+        const localRfqPhone = phone.id === 'contactNumber';
+        phone.maxLength = localRfqPhone ? 10 : 16;
+        phone.inputMode = localRfqPhone ? 'numeric' : 'tel';
+        if (localRfqPhone) phone.pattern = '9[0-9]{9}';
+        const validatePhone = () => {
+            if (localRfqPhone) {
+                const digits = phone.value.replace(/\D/g, '').slice(0, 10);
+                if (phone.value !== digits) phone.value = digits;
+                phone.setCustomValidity(digits && !/^9\d{9}$/.test(digits)
+                    ? 'Enter exactly 10 digits starting with 9, such as 9171234567.'
+                    : '');
+                return;
+            }
+            const normalized = phone.value.trim().replace(/[\s().-]+/g, '');
+            phone.setCustomValidity(normalized && !/^(?:\+?63|0)?9\d{9}$/.test(normalized)
+                ? 'Enter a valid Philippine mobile number, such as 0917 123 4567.'
+                : '');
+        };
+        phone.addEventListener('input', validatePhone);
+        phone.addEventListener('blur', validatePhone);
+        phone.form?.addEventListener('submit', (event) => {
+            validatePhone();
+            if (!phone.reportValidity()) event.preventDefault();
+        });
+    }
+
+    const cartForm = document.querySelector('.canriv-purchase-cart .woocommerce-cart-form');
+    if (cartForm) {
+        let cartUpdateTimer;
+        cartForm.addEventListener('change', event => {
+            if (!event.target.matches('.quantity .qty')) return;
+            clearTimeout(cartUpdateTimer);
+            cartUpdateTimer = setTimeout(() => {
+                cartForm.requestSubmit();
+            }, 400);
+        });
+    }
+
     const checkout = document.querySelector('.canriv-purchase form.checkout');
     const submit = checkout?.querySelector('.canriv-summary-submit');
     const nativeSubmit = checkout?.querySelector('#place_order');

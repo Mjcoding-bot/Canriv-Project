@@ -1,6 +1,24 @@
 <?php
 defined('ABSPATH') || exit;
 
+add_filter('body_class', function ($classes) {
+    if (is_account_page() && is_wc_endpoint_url('view-order')) {
+        $classes[] = 'canriv-view-order-page';
+    }
+    return $classes;
+});
+
+add_filter('wc_order_statuses', function ($statuses) {
+    if (is_account_page() && is_wc_endpoint_url('view-order') && isset($statuses['wc-processing'])) {
+        $statuses['wc-processing'] = 'Accepted';
+    }
+    return $statuses;
+});
+
+add_action('woocommerce_view_order', function () {
+    echo '<a class="canriv-account-back-link" href="' . esc_url(wc_get_page_permalink('myaccount')) . '"><span class="material-symbols-outlined" aria-hidden="true">arrow_back</span> Back to My Account</a>';
+}, 1);
+
 add_action('template_redirect', function () {
     if (is_user_logged_in() && is_account_page() && is_wc_endpoint_url('edit-account')) {
         wp_safe_redirect(wc_get_page_permalink('myaccount') . '#canriv-password');
@@ -48,11 +66,13 @@ add_action('admin_post_canriv_save_customer_profile', function () {
         wp_safe_redirect(add_query_arg('profile_status', $status, wc_get_page_permalink('myaccount')) . '#canriv-profile', 303);
         exit;
     };
-    $phone = preg_replace('/[\s()-]+/', '', $values['phone']);
+    $phone = canriv_normalize_ph_mobile($values['phone']);
+    if ($phone === false) {
+        $finish('phone_invalid');
+    }
     if (!$values['first_name'] || !$values['last_name'] || !$values['display_name'] || !$values['address_1'] || !$values['barangay'] ||
         !$values['city'] || !isset(WC()->countries->get_states('PH')[$values['state']]) ||
-        !preg_match('/^\d{4}$/', $values['postcode']) || !is_email($values['email']) ||
-        ($phone && !preg_match('/^(?:\+?63|0)?9\d{9}$/', $phone))) {
+        !preg_match('/^\d{4}$/', $values['postcode']) || !is_email($values['email'])) {
         $finish('invalid');
     }
     $email_owner = email_exists($values['email']);
@@ -84,7 +104,7 @@ add_action('admin_post_canriv_save_customer_profile', function () {
     }
     $customer->set_email($values['email']);
     $customer->set_billing_email($values['email']);
-    $customer->set_billing_phone($phone ? '+63' . substr($phone, -10) : '');
+    $customer->set_billing_phone($phone);
     foreach (['first_name', 'last_name', 'address_1', 'city', 'state', 'postcode', 'country'] as $field) {
         $value = $field === 'country' ? 'PH' : $values[$field];
         $customer->set_props(['billing_' . $field => $value, 'shipping_' . $field => $value]);
